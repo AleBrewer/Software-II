@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="632.0" prefWidth="717.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <HBox layoutX="34.0" layoutY="162.0" prefHeight="439.0" prefWidth="650.0">
+         <children>
+            <VBox prefHeight="690.0" prefWidth="330.0" spacing="15.0">
+               <children>
+                  <Label text="ID">
+                     <font>
+                        <Font size="26.0" />
+                     </font>
+                  </Label>
+                  <Label text="Name">
+                     <font>
+                        <Font size="26.0" />
+                     </font>
+                  </Label>
+                  <Label text="Address">
+                     <font>
+                        <Font size="26.0" />
+                     </font>
+                  </Label>
+                  <Label text="Postal Code">
+                     <font>
+                        <Font size="26.0" />
+                     </font>
+                  </Label>
+                  <Label text="Phone Number">
+                     <font>
+                        <Font size="26.0" />
+                     </font>
+                  </Label>
+                  <Label text="First Level Division">
+                     <font>
+                        <Font size="26.0" />
+                     </font>
+                     <padding>
+                        <Insets top="5.0" />
+                     </padding>
+                  </Label>
+                  <Label text="Country">
+                     <font>
+                        <Font size="26.0" />
+                     </font>
+                     <padding>
+                        <Insets top="4.0" />
+                     </padding>
+                  </Label>
+               </children>
+            </VBox>
+            <VBox prefHeight="690.0" prefWidth="300.0" spacing="29.0">
+               <children>
+                  <TextField />
+                  <TextField />
+                  <TextField />
+                  <TextField />
+                  <TextField prefWidth="318.0" />
+                  <ComboBox prefHeight="28.0" prefWidth="150.0" />
+                  <ComboBox prefWidth="150.0" />
+               </children>
+               <padding>
+                  <Insets top="5.0" />
+               </padding>
+            </VBox>
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>
