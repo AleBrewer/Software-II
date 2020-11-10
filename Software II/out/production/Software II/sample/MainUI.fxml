@@ -17,12 +17,12 @@
       <TableView fx:id="customerTableView" layoutX="84.0" layoutY="47.0" prefHeight="394.0" prefWidth="643.0">
         <columns>
           <TableColumn fx:id="customerIDColumn" prefWidth="37.0" text="ID" />
-          <TableColumn fx:id="customerNameColumn" prefWidth="140.0" text="Name" />
-            <TableColumn fx:id="customerAddressColumn" prefWidth="119.0" text="Address" />
-            <TableColumn fx:id="customerPostalCodeColumn" prefWidth="71.0" text="Postal Code" />
-            <TableColumn fx:id="customerPhoneColumn" prefWidth="106.0" text="Phone" />
-            <TableColumn fx:id="customerStateColumn" prefWidth="73.0" text="State" />
-            <TableColumn fx:id="customerCountryColumn" prefWidth="96.0" text="Country" />
+          <TableColumn fx:id="customerNameColumn" prefWidth="113.0" text="Name" />
+            <TableColumn fx:id="customerAddressColumn" prefWidth="145.0" text="Address" />
+            <TableColumn fx:id="customerPostalCodeColumn" prefWidth="78.0" text="Postal Code" />
+            <TableColumn fx:id="customerPhoneColumn" prefWidth="93.0" text="Phone" />
+            <TableColumn fx:id="customerStateColumn" prefWidth="126.0" text="State" />
+            <TableColumn fx:id="customerCountryColumn" prefWidth="50.0" text="Country" />
         </columns>
       </TableView>
       <Button layoutX="84.0" layoutY="457.0" mnemonicParsing="false" onAction="#addButtonPushed" prefHeight="25.0" prefWidth="97.0" text="Add" />

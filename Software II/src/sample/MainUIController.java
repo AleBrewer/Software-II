@@ -12,10 +12,9 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.sql.*;
-import java.time.LocalDateTime;
+
 
 
 public class MainUIController {
@@ -25,22 +24,15 @@ public class MainUIController {
     //Configure the Customer Table
     @FXML private TableView<Customer> customerTableView;
     @FXML private TableColumn<Customer, Integer> customerIDColumn;
-    @FXML private TableColumn<Customer,String> customerNameColumn;
+    @FXML private TableColumn<Customer, String> customerNameColumn;
     @FXML private TableColumn<Customer, String> customerAddressColumn;
     @FXML private TableColumn<Customer, String> customerPostalCodeColumn;
     @FXML private TableColumn<Customer, String> customerPhoneColumn;
     @FXML private TableColumn<Customer, String> customerStateColumn;
     @FXML private TableColumn<Customer, String> customerCountryColumn;
 
-
-    //LoginUIController databaseConnection = new LoginUIController();
-
-    //String url = "jdbc:mysql://wgudb.ucertify.com:3306/WJ06Xzb";
-    //String username = "U06Xzb";
-    //String password = "53688897357";
-
     Connection conn;
-
+    private Integer userID;
 
     public void addButtonPushed(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader();
@@ -49,53 +41,73 @@ public class MainUIController {
 
         Scene tableViewScene = new Scene(tableViewParent);
 
+        CustomerAddModifyController customerAddModifyController = loader.getController();
+        customerAddModifyController.setDatabaseConnectionAdd(conn, userID);
+
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
         window.setScene(tableViewScene);
         window.show();
-
-
-        try {
-            Statement stmt = conn.createStatement();
-            String sqlStatement = "INSERT INTO customers" +
-                    "(Customer_ID, Customer_Name, Address, Postal_Code, Phone, Create_Date, Created_By, Last_Update, Last_Updated_By, Division_ID)" +
-                    "VALUES (4, 'Alex Brewer', '1234 Happy town', '84444','801-123-1234', '11/02/20', 'Alex', '11/02/20', 'Alex', '23')";
-
-            int rows = stmt.executeUpdate(sqlStatement);
-
-            System.out.println(sqlStatement);
-            System.out.println("Add Button");
-        }
-        catch (Exception ex) {System.out.println("Error: " + ex.getMessage());}
-
     }
 
 
+    public void updateButtonPushed(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("CustomerAddModifyUI.fxml"));
+        Parent tableViewParent = loader.load();
+
+        Scene tableViewScene = new Scene(tableViewParent);
 
 
-    public void updateButtonPushed()
+        Customer selectedCustomer = customerTableView.getSelectionModel().getSelectedItem();
+
+        CustomerAddModifyController customerAddModifyController = loader.getController();
+        customerAddModifyController.setDatabaseConnectionModify(conn, userID, selectedCustomer);
+
+        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+        window.setScene(tableViewScene);
+        window.show();
+    }
+
+    public void deleteButtonPushed() throws  IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("ConfirmCustomerDelete.fxml"));
+        Parent tableViewParent = loader.load();
+
+        Scene tableViewScene = new Scene(tableViewParent);
+        Stage window = new Stage();
+
+        Customer selectedCustomer = customerTableView.getSelectionModel().getSelectedItem();
+
+        ConfirmCustomerDeleteController confirmCustomerDeleteController = loader.getController();
+        confirmCustomerDeleteController.setSelectedCustomer(selectedCustomer, conn, customerList);
+
+        window.setScene(tableViewScene);
+        window.show();
+
+    }
+
+    public void appointmentsButtonPushed(ActionEvent event) throws IOException
     {
-        System.out.println("Update Button");
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("AppointmentsUI.fxml"));
+        Parent tableViewParent = loader.load();
+
+        Scene tableViewScene = new Scene(tableViewParent);
+
+        AppointmentsUIController appointmentsUIController = loader.getController();
+        appointmentsUIController.setDatabaseConnection(conn, userID);
+
+        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+        window.setScene(tableViewScene);
+        window.show();
     }
 
-    public void deleteButtonPushed()
-    {
-        System.out.println("Delete Pushed");
-    }
 
-    public void appointmentsButtonPushed()
-    {
-        System.out.println("Appointments pushed");
-    }
-
-
-
-
-
-    public void setDatabaseConnection(Connection loginUI){
+    public void setDatabaseConnection(Connection loginUI, Integer user){
         conn = loginUI;
+        userID = user;
         populateCustomerTable();
     }
-
 
     private void populateCustomerTable()
     {
@@ -103,28 +115,40 @@ public class MainUIController {
             String sqlStatement = "SELECT * FROM customers";
             Statement stmt = conn.createStatement();
             ResultSet result = stmt.executeQuery(sqlStatement);
-
             result.next();
+
+
 
             do
             {
+                String firstDivisionSql = "SELECT * FROM first_level_divisions WHERE Division_ID = '" + result.getString("Division_ID") + "'";
+                Statement firstDivisionStmt = conn.createStatement();
+                ResultSet firstDivisionResult = firstDivisionStmt.executeQuery(firstDivisionSql);
+                firstDivisionResult.next();
+
+                String countrySql = "SELECT * FROM countries WHERE Country_ID = '" + firstDivisionResult.getString("COUNTRY_ID") + "'";
+                Statement countryStmt = conn.createStatement();
+                ResultSet countryResult = countryStmt.executeQuery(countrySql);
+                countryResult.next();
+
                 customerList.add(new Customer(
-                                result.getInt("Customer_ID"),
-                                result.getString("Customer_Name"),
-                                result.getString("Address"),
-                                result.getString("Postal_Code"),
-                                result.getString("Phone"),
-                                result.getDate("Create_Date"),
-                                result.getString("Created_By"),
-                                result.getDate("Last_Update"),
-                                result.getString("Last_Updated_By"),
-                                result.getString("Division_ID")
+                        result.getInt("Customer_ID"),
+                        result.getString("Customer_Name"),
+                        result.getString("Address"),
+                        result.getString("Postal_Code"),
+                        result.getString("Phone"),
+                        result.getDate("Create_Date"),
+                        result.getString("Created_By"),
+                        result.getDate("Last_Update"),
+                        result.getString("Last_Updated_By"),
+                        firstDivisionResult.getString("Division"),
+                        countryResult.getString("Country")
                         )
                 );
 
-                customerTableView.setItems(customerList);
-
             }while(result.next());
+
+            customerTableView.setItems(customerList);
         }
         catch (Exception ex){System.out.println("Error:" + ex.getMessage());}
     }
@@ -139,9 +163,7 @@ public class MainUIController {
         customerPostalCodeColumn.setCellValueFactory(new PropertyValueFactory<>("postalCode"));
         customerPhoneColumn.setCellValueFactory(new PropertyValueFactory<>("phone"));
         customerStateColumn.setCellValueFactory(new PropertyValueFactory<>("division"));
-        //customerCountryColumn.setCellValueFactory(new PropertyValueFactory<>("Country"));
-
-
+        customerCountryColumn.setCellValueFactory(new PropertyValueFactory<>("country"));
 
     }
 

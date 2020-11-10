@@ -4,8 +4,8 @@ package sample;
 
 import java.sql.Date;
 
-public class Customer
-{
+public class Customer {
+
     private int id;
     private String name;
     private String address;
@@ -16,9 +16,10 @@ public class Customer
     private Date lastUpdated;
     private String lastUpdatedBy;
     private String division;
+    private String country;
 
     public Customer(int id, String name, String address, String postalCode, String phone, Date createDate, String createBy,
-                    Date lastUpdated, String lastUpdatedBy, String division)
+                    Date lastUpdated, String lastUpdatedBy, String division, String country)
     {
         this.id = id;
         this.name = name;
@@ -30,6 +31,7 @@ public class Customer
         this.lastUpdated = lastUpdated;
         this.lastUpdatedBy = lastUpdatedBy;
         this.division = division;
+        this.country = country;
     }
 
     public  int getId(){return id;}
@@ -71,5 +73,9 @@ public class Customer
     public String getDivision() {return division;}
 
     public void setDivision(String division) {this.division = division;}
+
+    public String getCountry() {return country;}
+
+    public void setCountry(String country) {this.country = country;}
 
 }

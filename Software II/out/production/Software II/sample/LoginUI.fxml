@@ -18,19 +18,28 @@
             <Font size="22.0" />
          </font>
       </Label>
-      <TextField layoutX="217.0" layoutY="105.0" promptText="UserID" />
-      <TextField layoutX="217.0" layoutY="150.0" promptText="Password" />
+      <TextField fx:id="userIDTextField" layoutX="217.0" layoutY="105.0" promptText="UserID" />
+      <TextField fx:id="passwordTextField" layoutX="217.0" layoutY="150.0" promptText="Password" />
       <Label layoutX="105.0" layoutY="146.0" text="Password">
          <font>
             <Font size="22.0" />
          </font>
       </Label>
       <Button layoutX="390.0" layoutY="239.0" mnemonicParsing="false" onAction="#loginButton" prefWidth="56.0" text="Login" />
-      <Label layoutX="144.0" layoutY="199.0" prefHeight="27.0" prefWidth="222.0" text="Invalid UserID or Password">
+      <Label fx:id="loginErrorLabel" layoutX="133.0" layoutY="199.0" prefHeight="27.0" prefWidth="242.0">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
       <Button layoutX="454.0" layoutY="239.0" mnemonicParsing="false" onAction="#exitButtonPushed" text="Exit" />
+      <Label fx:id="localTimeLabel" alignment="CENTER_RIGHT" layoutX="324.0" layoutY="14.0" prefHeight="25.0" prefWidth="170.0" textAlignment="RIGHT">
+         <font>
+            <Font size="14.0" />
+         </font></Label>
+      <Label fx:id="countryLabel" alignment="CENTER_RIGHT" layoutX="324.0" layoutY="42.0" prefHeight="25.0" prefWidth="170.0" textAlignment="RIGHT">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

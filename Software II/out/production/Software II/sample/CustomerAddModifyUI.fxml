@@ -12,7 +12,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="493.0" prefWidth="717.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.CustomerAddModifyController">
    <children>
-      <HBox layoutX="34.0" layoutY="97.0" prefHeight="439.0" prefWidth="650.0">
+      <HBox layoutX="34.0" layoutY="97.0" prefHeight="362.0" prefWidth="547.0">
          <children>
             <VBox prefHeight="439.0" prefWidth="176.0" spacing="20.0">
                <children>
@@ -41,14 +41,6 @@
                         <Font size="20.0" />
                      </font>
                   </Label>
-                  <Label text="First Level Division">
-                     <font>
-                        <Font size="20.0" />
-                     </font>
-                     <padding>
-                        <Insets top="1.0" />
-                     </padding>
-                  </Label>
                   <Label text="Country">
                      <font>
                         <Font size="20.0" />
@@ -57,17 +49,25 @@
                         <Insets top="4.0" />
                      </padding>
                   </Label>
+                  <Label text="First Level Division">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                     <padding>
+                        <Insets top="1.0" />
+                     </padding>
+                  </Label>
                </children>
             </VBox>
             <VBox prefHeight="690.0" prefWidth="300.0" spacing="25.0">
                <children>
-                  <TextField />
-                  <TextField />
-                  <TextField />
-                  <TextField />
-                  <TextField prefWidth="318.0" />
-                  <ComboBox prefHeight="28.0" prefWidth="150.0" />
-                  <ComboBox prefWidth="150.0" />
+                  <TextField fx:id="idTextField" editable="false" promptText="Auto-Generated" />
+                  <TextField fx:id="nameTextField" />
+                  <TextField fx:id="addressTextField" />
+                  <TextField fx:id="postalCodeTextField" />
+                  <TextField fx:id="phoneNumberTextField" prefWidth="318.0" />
+                  <ComboBox fx:id="countryComboBox" onAction="#filterFirstLevelDivisions" prefWidth="150.0" />
+                  <ComboBox fx:id="firstLevelDivisionComboBox" prefHeight="28.0" prefWidth="150.0" />
                </children>
                <padding>
                   <Insets top="5.0" />
@@ -80,6 +80,7 @@
             <Font size="29.0" />
          </font>
       </Label>
-      <Button layoutX="667.0" layoutY="28.0" mnemonicParsing="false" onAction="#exitButton" text="Exit" />
+      <Button layoutX="662.0" layoutY="454.0" mnemonicParsing="false" onAction="#backButton" text="Back" />
+      <Button layoutX="613.0" layoutY="454.0" mnemonicParsing="false" onAction="#addCustomerButton" text="Save" />
    </children>
 </AnchorPane>
