@@ -112,20 +112,22 @@ public class AppointmentsUIController {
 
     }
 
-    public void testAppointmentTime()
+    public void testAppointmentTime(ActionEvent event) throws IOException
     {
-        try {
-            String sqlStatement = "SELECT * FROM appointments";
-            Statement stmt = conn.createStatement();
-            ResultSet result = stmt.executeQuery(sqlStatement);
-            result.next();
 
-            System.out.println(result.getTimestamp("Start"));
-            System.out.println(result.getTime("Start"));
-            System.out.println(result.getTimestamp("Start"));
-            
-        }
-        catch (Exception ex){System.out.println(ex.getMessage());}
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("AppointmentsAddModifyUI.fxml"));
+        Parent tableViewParent = loader.load();
+
+        Scene tableViewScene = new Scene(tableViewParent);
+
+        AppointmentsAddModifyController appointmentsAddModifyController = loader.getController();
+        appointmentsAddModifyController.setDatabaseConnection(conn, userID);
+
+        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+        window.setScene(tableViewScene);
+        window.show();
+
     }
 
 
