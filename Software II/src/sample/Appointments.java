@@ -1,19 +1,20 @@
 package sample;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 public class Appointments {
 
-    private int applicationID;
+    private int appointmentID;
     private String title;
     private String description;
     private String location;
     private String type;
-    private Date start;
-    private Date end;
-    private Date createDate;
+    private LocalDateTime start;
+    private LocalDateTime end;
+    private LocalDateTime createDate;
     private String createBy;
-    private Date lastUpdate;
+    private LocalDateTime lastUpdate;
     private String lastUpdateBy;
     private int customerID;
     private int userID;
@@ -21,10 +22,10 @@ public class Appointments {
     private String contactName;
     private String customerName;
 
-    public Appointments(int applicationID, String title, String description, String location, String type, Date start, Date end, Date createDate,
-                        String createBy, Date lastUpdate, String lastUpdateBy, int customerID, int userID, int contactID, String contactName, String customerName )
+    public Appointments(int appointmentID, String title, String description, String location, String type, LocalDateTime start, LocalDateTime end, LocalDateTime createDate,
+                        String createBy, LocalDateTime lastUpdate, String lastUpdateBy, int customerID, int userID, int contactID, String contactName, String customerName )
     {
-        this.applicationID = applicationID;
+        this.appointmentID = appointmentID;
         this.title = title;
         this.description = description;
         this.location = location;
@@ -42,9 +43,9 @@ public class Appointments {
         this.customerName = customerName;
     }
 
-    public int getApplicationID() { return applicationID; }
+    public int getAppointmentID() { return appointmentID; }
 
-    public void setApplicationID(int applicationID) { this.applicationID = applicationID; }
+    public void setAppointmentID(int appointmentID) { this.appointmentID = appointmentID; }
 
     public String getTitle() { return title; }
 
@@ -70,27 +71,27 @@ public class Appointments {
         this.type = type;
     }
 
-    public Date getStart() {
+    public LocalDateTime getStart() {
         return start;
     }
 
-    public void setStart(Date start) {
+    public void setStart(LocalDateTime start) {
         this.start = start;
     }
 
-    public Date getEnd() {
+    public LocalDateTime getEnd() {
         return end;
     }
 
-    public void setEnd(Date end) {
+    public void setEnd(LocalDateTime end) {
         this.end = end;
     }
 
-    public Date getCreateDate() {
+    public LocalDateTime getCreateDate() {
         return createDate;
     }
 
-    public void setCreateDate(Date createDate) {
+    public void setCreateDate(LocalDateTime createDate) {
         this.createDate = createDate;
     }
 
@@ -102,11 +103,11 @@ public class Appointments {
         this.createBy = createBy;
     }
 
-    public Date getLastUpdate() {
+    public LocalDateTime getLastUpdate() {
         return lastUpdate;
     }
 
-    public void setLastUpdate(Date lastUpdate) {
+    public void setLastUpdate(LocalDateTime lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
 

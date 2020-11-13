@@ -13,19 +13,22 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
+import java.util.TimeZone;
+
 
 public class AppointmentsUIController {
 
     ObservableList<Appointments> appointmentsList = FXCollections.observableArrayList();
 
     @FXML TableView<Appointments> appointmentsTableView;
-    @FXML private TableColumn<Appointments, Integer> applicationIDColumn;
+    @FXML private TableColumn<Appointments, Integer> appointmentIDColumn;
     @FXML private TableColumn<Appointments, String> titleColumn;
     @FXML private TableColumn<Appointments, String> descriptionColumn;
     @FXML private TableColumn<Appointments, String> locationColumn;
@@ -36,6 +39,8 @@ public class AppointmentsUIController {
     @FXML private TableColumn<Appointments, Integer> customerIDColumn;
     @FXML private TableColumn<Appointments, String> customerNameColumn;
 
+
+    DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("MM-dd-yy hh:mm a");
     Connection conn;
     private Integer userID;
 
@@ -83,11 +88,11 @@ public class AppointmentsUIController {
                         result.getString("Description"),
                         result.getString("Location"),
                         result.getString("Type"),
-                        result.getDate("Start"),
-                        result.getDate("End"),
-                        result.getDate("Create_Date"),
+                        result.getTimestamp("Start").toLocalDateTime(),
+                        result.getTimestamp("End").toLocalDateTime(),
+                        result.getTimestamp("Create_Date").toLocalDateTime(),
                         result.getString("Created_By"),
-                        result.getDate("Last_Update"),
+                        result.getTimestamp("Last_Update").toLocalDateTime(),
                         result.getString("Last_Updated_By"),
                         result.getInt("Customer_ID"),
                         result.getInt("User_ID"),
@@ -112,9 +117,8 @@ public class AppointmentsUIController {
 
     }
 
-    public void testAppointmentTime(ActionEvent event) throws IOException
+    public void addAppointmentsButton(ActionEvent event) throws IOException
     {
-
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("AppointmentsAddModifyUI.fxml"));
         Parent tableViewParent = loader.load();
@@ -122,7 +126,7 @@ public class AppointmentsUIController {
         Scene tableViewScene = new Scene(tableViewParent);
 
         AppointmentsAddModifyController appointmentsAddModifyController = loader.getController();
-        appointmentsAddModifyController.setDatabaseConnection(conn, userID);
+        appointmentsAddModifyController.setDatabaseConnectionAdd(conn, userID);
 
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
         window.setScene(tableViewScene);
@@ -130,13 +134,47 @@ public class AppointmentsUIController {
 
     }
 
+    public void updateAppointments(ActionEvent event) throws IOException
+    {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("AppointmentsAddModifyUI.fxml"));
+        Parent tableViewParent = loader.load();
 
+        Scene tableViewScene = new Scene(tableViewParent);
+
+        Appointments selectedAppointment = appointmentsTableView.getSelectionModel().getSelectedItem();
+        AppointmentsAddModifyController appointmentsAddModifyController = loader.getController();
+        appointmentsAddModifyController.setDatabaseConnectionModify(conn, userID,selectedAppointment);
+
+        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
+        window.setScene(tableViewScene);
+        window.show();
+    }
+
+
+    public void deleteButtonPushed() throws  IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("ConfirmAppointmentsDelete.fxml"));
+        Parent tableViewParent = loader.load();
+
+        Scene tableViewScene = new Scene(tableViewParent);
+        Stage window = new Stage();
+
+        Appointments selectedAppointment = appointmentsTableView.getSelectionModel().getSelectedItem();
+
+        ConfirmAppointmentsDeleteController confirmAppointmentsDeleteController = loader.getController();
+        confirmAppointmentsDeleteController.setSelectedCustomer(selectedAppointment, conn, appointmentsList);
+
+        window.setScene(tableViewScene);
+        window.show();
+
+    }
 
 
     public void initialize()
     {
 
-        applicationIDColumn.setCellValueFactory(new PropertyValueFactory<>("applicationID"));
+        appointmentIDColumn.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));
         titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
         locationColumn.setCellValueFactory(new PropertyValueFactory<>("location"));

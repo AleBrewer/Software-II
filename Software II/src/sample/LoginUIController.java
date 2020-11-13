@@ -96,6 +96,7 @@ public class LoginUIController {
         TimeZone localtimeZone = calendar.getTimeZone();
         localTimeLabel.setText(localtimeZone.getDisplayName());
 
+
         Locale country = Locale.getDefault();
         countryLabel.setText(country.getCountry());
 
