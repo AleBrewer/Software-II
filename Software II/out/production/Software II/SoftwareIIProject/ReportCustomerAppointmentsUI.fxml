@@ -9,7 +9,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="564.0" prefWidth="1249.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SoftwareIIProject.ReportCustomerAppointmentsController">
    <children>
-      <Label layoutX="367.0" layoutY="14.0" text="Customer Appointments by Type and Month">
+      <Label fx:id="customerAppointmentLabel" layoutX="367.0" layoutY="14.0" text="Customer Appointments by Type and Month">
          <font>
             <Font name="System Bold" size="22.0" />
          </font>
@@ -20,7 +20,7 @@
                <children>
                   <VBox prefHeight="198.0" prefWidth="110.0">
                      <children>
-                        <Label alignment="TOP_CENTER" prefHeight="25.0" prefWidth="196.0" text="Type">
+                        <Label fx:id="januaryTypeLabel" alignment="TOP_CENTER" prefHeight="25.0" prefWidth="196.0" text="Type">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -28,9 +28,9 @@
                         <Label fx:id="januaryType" alignment="TOP_CENTER" prefHeight="211.0" prefWidth="160.0" text="Label" />
                      </children>
                   </VBox>
-                  <VBox prefHeight="198.0" prefWidth="59.0">
+                  <VBox prefHeight="196.0" prefWidth="63.0">
                      <children>
-                        <Label alignment="TOP_CENTER" prefHeight="17.0" prefWidth="107.0" text="Number">
+                        <Label fx:id="januaryNumberLabel" alignment="TOP_CENTER" prefHeight="17.0" prefWidth="107.0" text="Number">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -44,7 +44,7 @@
                <children>
                   <VBox prefHeight="198.0" prefWidth="150.0">
                      <children>
-                        <Label alignment="TOP_CENTER" prefHeight="25.0" prefWidth="218.0" text="Type">
+                        <Label fx:id="februaryTypeLabel" alignment="TOP_CENTER" prefHeight="25.0" prefWidth="218.0" text="Type">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -54,7 +54,7 @@
                   </VBox>
                   <VBox prefHeight="200.0" prefWidth="100.0">
                      <children>
-                        <Label alignment="TOP_CENTER" prefHeight="17.0" prefWidth="107.0" text="Number">
+                        <Label fx:id="februaryNumberLabel" alignment="TOP_CENTER" prefHeight="17.0" prefWidth="107.0" text="Number">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -68,7 +68,7 @@
                <children>
                   <VBox prefHeight="198.0" prefWidth="149.0">
                      <children>
-                        <Label alignment="TOP_CENTER" prefHeight="25.0" prefWidth="209.0" text="Type">
+                        <Label fx:id="marchTypeLabel" alignment="TOP_CENTER" prefHeight="25.0" prefWidth="209.0" text="Type">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -78,7 +78,7 @@
                   </VBox>
                   <VBox prefHeight="200.0" prefWidth="100.0">
                      <children>
-                        <Label alignment="TOP_CENTER" prefHeight="17.0" prefWidth="107.0" text="Number">
+                        <Label fx:id="marchNumberLabel" alignment="TOP_CENTER" prefHeight="17.0" prefWidth="107.0" text="Number">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -92,7 +92,7 @@
                <children>
                   <VBox prefHeight="198.0" prefWidth="149.0">
                      <children>
-                        <Label alignment="TOP_CENTER" prefHeight="25.0" prefWidth="147.0" text="Type">
+                        <Label fx:id="aprilTypeLabel" alignment="TOP_CENTER" prefHeight="25.0" prefWidth="147.0" text="Type">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -102,7 +102,7 @@
                   </VBox>
                   <VBox prefHeight="200.0" prefWidth="100.0">
                      <children>
-                        <Label alignment="TOP_CENTER" prefHeight="17.0" prefWidth="107.0" text="Number">
+                        <Label fx:id="aprilNumberLabel" alignment="TOP_CENTER" prefHeight="17.0" prefWidth="107.0" text="Number">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -116,7 +116,7 @@
                <children>
                   <VBox prefHeight="198.0" prefWidth="147.0">
                      <children>
-                        <Label alignment="TOP_CENTER" prefHeight="25.0" prefWidth="257.0" text="Type">
+                        <Label fx:id="mayTypeLabel" alignment="TOP_CENTER" prefHeight="25.0" prefWidth="257.0" text="Type">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -126,7 +126,7 @@
                   </VBox>
                   <VBox prefHeight="200.0" prefWidth="100.0">
                      <children>
-                        <Label alignment="TOP_CENTER" prefHeight="17.0" prefWidth="107.0" text="Number">
+                        <Label fx:id="mayNumberLabel" alignment="TOP_CENTER" prefHeight="17.0" prefWidth="107.0" text="Number">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -140,7 +140,7 @@
                <children>
                   <VBox prefHeight="198.0" prefWidth="117.0">
                      <children>
-                        <Label alignment="TOP_CENTER" prefHeight="25.0" prefWidth="185.0" text="Type">
+                        <Label fx:id="juneTypeLabel" alignment="TOP_CENTER" prefHeight="25.0" prefWidth="185.0" text="Type">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -150,7 +150,7 @@
                   </VBox>
                   <VBox prefHeight="198.0" prefWidth="70.0">
                      <children>
-                        <Label alignment="TOP_CENTER" prefHeight="17.0" prefWidth="107.0" text="Number">
+                        <Label fx:id="juneNumberLabel" alignment="TOP_CENTER" prefHeight="17.0" prefWidth="107.0" text="Number">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -162,32 +162,32 @@
             </HBox>
          </children>
       </HBox>
-      <Label alignment="TOP_CENTER" layoutX="45.0" layoutY="54.0" prefHeight="30.0" prefWidth="136.0" text="January">
+      <Label fx:id="januaryLabel" alignment="TOP_CENTER" layoutX="45.0" layoutY="54.0" prefHeight="30.0" prefWidth="136.0" text="January">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <Label alignment="TOP_CENTER" layoutX="256.0" layoutY="54.0" prefHeight="30.0" prefWidth="136.0" text="February">
+      <Label fx:id="februaryLabel" alignment="TOP_CENTER" layoutX="256.0" layoutY="54.0" prefHeight="30.0" prefWidth="136.0" text="February">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <Label alignment="TOP_CENTER" layoutX="462.0" layoutY="54.0" prefHeight="30.0" prefWidth="136.0" text="March">
+      <Label fx:id="marchLabel" alignment="TOP_CENTER" layoutX="462.0" layoutY="54.0" prefHeight="30.0" prefWidth="136.0" text="March">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <Label alignment="TOP_CENTER" layoutX="675.0" layoutY="54.0" prefHeight="30.0" prefWidth="136.0" text="April">
+      <Label fx:id="aprilLabel" alignment="TOP_CENTER" layoutX="675.0" layoutY="54.0" prefHeight="30.0" prefWidth="136.0" text="April">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <Label alignment="TOP_CENTER" layoutX="876.0" layoutY="54.0" prefHeight="30.0" prefWidth="136.0" text="May">
+      <Label fx:id="mayLabel" alignment="TOP_CENTER" layoutX="876.0" layoutY="54.0" prefHeight="30.0" prefWidth="136.0" text="May">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <Label alignment="TOP_CENTER" layoutX="1087.0" layoutY="54.0" prefHeight="30.0" prefWidth="136.0" text="June">
+      <Label fx:id="juneLabel" alignment="TOP_CENTER" layoutX="1087.0" layoutY="54.0" prefHeight="30.0" prefWidth="136.0" text="June">
          <font>
             <Font size="20.0" />
          </font>
@@ -198,7 +198,7 @@
                <children>
                   <VBox prefHeight="198.0" prefWidth="110.0">
                      <children>
-                        <Label alignment="TOP_CENTER" prefHeight="25.0" prefWidth="196.0" text="Type">
+                        <Label fx:id="julyTypeLabel" alignment="TOP_CENTER" prefHeight="25.0" prefWidth="196.0" text="Type">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -208,7 +208,7 @@
                   </VBox>
                   <VBox prefHeight="198.0" prefWidth="59.0">
                      <children>
-                        <Label alignment="TOP_CENTER" prefHeight="17.0" prefWidth="107.0" text="Number">
+                        <Label fx:id="julyNumberLabel" alignment="TOP_CENTER" prefHeight="17.0" prefWidth="107.0" text="Number">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -222,7 +222,7 @@
                <children>
                   <VBox prefHeight="198.0" prefWidth="150.0">
                      <children>
-                        <Label alignment="TOP_CENTER" prefHeight="25.0" prefWidth="218.0" text="Type">
+                        <Label fx:id="augustTypeLabel" alignment="TOP_CENTER" prefHeight="25.0" prefWidth="218.0" text="Type">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -232,7 +232,7 @@
                   </VBox>
                   <VBox prefHeight="200.0" prefWidth="100.0">
                      <children>
-                        <Label alignment="TOP_CENTER" prefHeight="17.0" prefWidth="107.0" text="Number">
+                        <Label fx:id="augustNumberLabel" alignment="TOP_CENTER" prefHeight="17.0" prefWidth="107.0" text="Number">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -246,7 +246,7 @@
                <children>
                   <VBox prefHeight="198.0" prefWidth="149.0">
                      <children>
-                        <Label alignment="TOP_CENTER" prefHeight="25.0" prefWidth="209.0" text="Type">
+                        <Label fx:id="septemberTypeLabel" alignment="TOP_CENTER" prefHeight="25.0" prefWidth="209.0" text="Type">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -256,7 +256,7 @@
                   </VBox>
                   <VBox prefHeight="200.0" prefWidth="100.0">
                      <children>
-                        <Label alignment="TOP_CENTER" prefHeight="17.0" prefWidth="107.0" text="Number">
+                        <Label fx:id="septemberNumberLabel" alignment="TOP_CENTER" prefHeight="17.0" prefWidth="107.0" text="Number">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -270,7 +270,7 @@
                <children>
                   <VBox prefHeight="198.0" prefWidth="149.0">
                      <children>
-                        <Label alignment="TOP_CENTER" prefHeight="25.0" prefWidth="147.0" text="Type">
+                        <Label fx:id="octoberTypeLabel" alignment="TOP_CENTER" prefHeight="25.0" prefWidth="147.0" text="Type">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -280,7 +280,7 @@
                   </VBox>
                   <VBox prefHeight="200.0" prefWidth="100.0">
                      <children>
-                        <Label alignment="TOP_CENTER" prefHeight="17.0" prefWidth="107.0" text="Number">
+                        <Label fx:id="octoberNumberLabel" alignment="TOP_CENTER" prefHeight="17.0" prefWidth="107.0" text="Number">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -294,7 +294,7 @@
                <children>
                   <VBox prefHeight="198.0" prefWidth="147.0">
                      <children>
-                        <Label alignment="TOP_CENTER" prefHeight="25.0" prefWidth="257.0" text="Type">
+                        <Label fx:id="novemberTypeLabel" alignment="TOP_CENTER" prefHeight="25.0" prefWidth="257.0" text="Type">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -304,7 +304,7 @@
                   </VBox>
                   <VBox prefHeight="200.0" prefWidth="100.0">
                      <children>
-                        <Label alignment="TOP_CENTER" prefHeight="17.0" prefWidth="107.0" text="Number">
+                        <Label fx:id="novemberNumberLabel" alignment="TOP_CENTER" prefHeight="17.0" prefWidth="107.0" text="Number">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -318,7 +318,7 @@
                <children>
                   <VBox prefHeight="198.0" prefWidth="117.0">
                      <children>
-                        <Label alignment="TOP_CENTER" prefHeight="25.0" prefWidth="185.0" text="Type">
+                        <Label fx:id="decemberTypeLabel" alignment="TOP_CENTER" prefHeight="25.0" prefWidth="185.0" text="Type">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -328,7 +328,7 @@
                   </VBox>
                   <VBox prefHeight="198.0" prefWidth="70.0">
                      <children>
-                        <Label alignment="TOP_CENTER" prefHeight="17.0" prefWidth="107.0" text="Number">
+                        <Label fx:id="decemberNumberLabel" alignment="TOP_CENTER" prefHeight="17.0" prefWidth="107.0" text="Number">
                            <font>
                               <Font size="16.0" />
                            </font>
@@ -340,36 +340,36 @@
             </HBox>
          </children>
       </HBox>
-      <Label alignment="TOP_CENTER" layoutX="45.0" layoutY="282.0" prefHeight="30.0" prefWidth="136.0" text="July">
+      <Label fx:id="julyLabel" alignment="TOP_CENTER" layoutX="45.0" layoutY="282.0" prefHeight="30.0" prefWidth="136.0" text="July">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <Label alignment="TOP_CENTER" layoutX="256.0" layoutY="282.0" prefHeight="30.0" prefWidth="136.0" text="August">
+      <Label fx:id="augustLabel" alignment="TOP_CENTER" layoutX="256.0" layoutY="282.0" prefHeight="30.0" prefWidth="136.0" text="August">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <Label alignment="TOP_CENTER" layoutX="462.0" layoutY="282.0" prefHeight="30.0" prefWidth="136.0" text="September">
+      <Label fx:id="septemberLabel" alignment="TOP_CENTER" layoutX="462.0" layoutY="282.0" prefHeight="30.0" prefWidth="136.0" text="September">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <Label alignment="TOP_CENTER" layoutX="675.0" layoutY="282.0" prefHeight="30.0" prefWidth="136.0" text="October">
+      <Label fx:id="octoberLabel" alignment="TOP_CENTER" layoutX="675.0" layoutY="282.0" prefHeight="30.0" prefWidth="136.0" text="October">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <Label alignment="TOP_CENTER" layoutX="876.0" layoutY="282.0" prefHeight="30.0" prefWidth="136.0" text="November">
+      <Label fx:id="novemberLabel" alignment="TOP_CENTER" layoutX="876.0" layoutY="282.0" prefHeight="30.0" prefWidth="136.0" text="November">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <Label alignment="TOP_CENTER" layoutX="1087.0" layoutY="282.0" prefHeight="30.0" prefWidth="136.0" text="December">
+      <Label fx:id="decemberLabel" alignment="TOP_CENTER" layoutX="1087.0" layoutY="282.0" prefHeight="30.0" prefWidth="136.0" text="December">
          <font>
             <Font size="20.0" />
          </font>
       </Label>
-      <Button layoutX="1194.0" layoutY="525.0" mnemonicParsing="false" onAction="#backToAppointments" text="Back" />
+      <Button fx:id="backButton" layoutX="1127.0" layoutY="525.0" mnemonicParsing="false" onAction="#backToAppointments" prefHeight="25.0" prefWidth="108.0" text="Back" />
    </children>
 </AnchorPane>

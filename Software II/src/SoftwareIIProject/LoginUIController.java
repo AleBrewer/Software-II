@@ -1,5 +1,7 @@
 package SoftwareIIProject;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,6 +20,10 @@ import java.util.TimeZone;
 
 public class LoginUIController {
 
+    ObservableList<Appointments> appointmentsList = FXCollections.observableArrayList();
+    ObservableList<Customer> customerList = FXCollections.observableArrayList();
+
+
     @FXML private Label userLoginLabel;
     @FXML private Label userIDLabel;
     @FXML private Label passwordLabel;
@@ -31,6 +37,10 @@ public class LoginUIController {
 
     Connection conn;
     Integer userIDNumber;
+
+
+
+
 
     public void loginButton (ActionEvent event) {
 
@@ -53,6 +63,9 @@ public class LoginUIController {
                 {
                     if (password.equals(result.getString("Password")))
                     {
+                        populateCustomerList();
+                        populateAppointmentsList();
+
                         userIDNumber = Integer.parseInt(result.getString("User_ID"));
                         FXMLLoader loader = new FXMLLoader();
                         loader.setLocation(getClass().getResource("MainUI.fxml"));
@@ -61,7 +74,7 @@ public class LoginUIController {
                         Scene tableViewScene = new Scene(tableViewParent);
 
                         MainUIController mainUIController = loader.getController();
-                        mainUIController.setDatabaseConnection(conn, userIDNumber);
+                        mainUIController.setDatabaseConnection(conn, userIDNumber, customerList, appointmentsList);
 
                         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
 
@@ -83,6 +96,101 @@ public class LoginUIController {
         System.out.println("Closed Database");
         System.exit(0);
     }
+
+
+    private void populateCustomerList()
+    {
+        try {
+            String sqlStatement = "SELECT * FROM customers";
+            Statement stmt = conn.createStatement();
+            ResultSet result = stmt.executeQuery(sqlStatement);
+            result.next();
+
+            do
+            {
+                String firstDivisionSql = "SELECT * FROM first_level_divisions WHERE Division_ID = '" + result.getString("Division_ID") + "'";
+                Statement firstDivisionStmt = conn.createStatement();
+                ResultSet firstDivisionResult = firstDivisionStmt.executeQuery(firstDivisionSql);
+                firstDivisionResult.next();
+
+                String countrySql = "SELECT * FROM countries WHERE Country_ID = '" + firstDivisionResult.getString("COUNTRY_ID") + "'";
+                Statement countryStmt = conn.createStatement();
+                ResultSet countryResult = countryStmt.executeQuery(countrySql);
+                countryResult.next();
+
+                customerList.add(new Customer(
+                                result.getInt("Customer_ID"),
+                                result.getString("Customer_Name"),
+                                result.getString("Address"),
+                                result.getString("Postal_Code"),
+                                result.getString("Phone"),
+                                result.getDate("Create_Date"),
+                                result.getString("Created_By"),
+                                result.getDate("Last_Update"),
+                                result.getString("Last_Updated_By"),
+                                firstDivisionResult.getString("Division"),
+                                countryResult.getString("Country")
+                        )
+                );
+
+            }while(result.next());
+
+        }
+        catch (Exception ex){System.out.println("Error:" + ex.getMessage());}
+    }
+
+
+    private void populateAppointmentsList()
+    {
+        try{
+
+            Calendar calendar = Calendar.getInstance();
+
+            String sqlStatement = "SELECT * FROM appointments";
+            Statement stmt = conn.createStatement();
+            ResultSet result = stmt.executeQuery(sqlStatement);
+
+
+            while(result.next()){
+
+                String contactSql = "SELECT * FROM contacts WHERE Contact_ID = '" + result.getString("Contact_ID") + "'";
+                Statement contactStmt = conn.createStatement();
+                ResultSet contactResult = contactStmt.executeQuery(contactSql);
+                contactResult.next();
+
+                String customerSql = "SELECT * FROM customers WHERE Customer_ID = '" + result.getString("Customer_ID") + "'";
+                Statement customerStmt = conn.createStatement();
+                ResultSet customerResult = customerStmt.executeQuery(customerSql);
+                customerResult.next();
+
+                appointmentsList.add(new Appointments(
+                                result.getInt("Appointment_ID"),
+                                result.getString("Title"),
+                                result.getString("Description"),
+                                result.getString("Location"),
+                                result.getString("Type"),
+                                result.getTimestamp("Start", calendar).toLocalDateTime(),
+                                result.getTimestamp("End", calendar).toLocalDateTime(),
+                                result.getTimestamp("Create_Date").toLocalDateTime(),
+                                result.getString("Created_By"),
+                                result.getTimestamp("Last_Update").toLocalDateTime(),
+                                result.getString("Last_Updated_By"),
+                                result.getInt("Customer_ID"),
+                                result.getInt("User_ID"),
+                                result.getInt("Contact_ID"),
+                                contactResult.getString("Contact_Name"),
+                                customerResult.getString("Customer_Name")
+                        )
+                );
+
+            }
+        }
+        catch(Exception ex) {System.out.println(ex.getMessage());}
+    }
+
+
+
+
 
 
     public void initialize()
@@ -107,6 +215,7 @@ public class LoginUIController {
         countryLabel.setText(country.getCountry());
 
         //Set your Language
+        Locale.setDefault(new Locale("fr"));
         Locale locale = Locale.getDefault();
         var rb = ResourceBundle.getBundle("translation",locale);
 

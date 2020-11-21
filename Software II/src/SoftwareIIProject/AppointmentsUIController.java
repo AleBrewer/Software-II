@@ -8,22 +8,21 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Calendar;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 
 public class AppointmentsUIController {
 
     ObservableList<Appointments> appointmentsList = FXCollections.observableArrayList();
+    ObservableList<Customer> customerList = FXCollections.observableArrayList();
 
     @FXML TableView<Appointments> appointmentsTableView;
     @FXML private TableColumn<Appointments, Integer> appointmentIDColumn;
@@ -37,12 +36,20 @@ public class AppointmentsUIController {
     @FXML private TableColumn<Appointments, Integer> customerIDColumn;
     @FXML private TableColumn<Appointments, String> customerNameColumn;
 
+
     @FXML private ToggleGroup appointmentFilter;
     @FXML private RadioButton currentMonth;
     @FXML private RadioButton currentWeek;
     ObservableList<Appointments> currentMonthList = FXCollections.observableArrayList();
     ObservableList<Appointments> currentWeekList = FXCollections.observableArrayList();
 
+
+    @FXML private Label appointmentLabel;
+    @FXML private Label viewByLabel;
+    @FXML private Button addButton;
+    @FXML private Button updateButton;
+    @FXML private Button deleteButton;
+    @FXML private Button backButton;
 
     Connection conn;
     private Integer userID;
@@ -55,67 +62,21 @@ public class AppointmentsUIController {
 
         Scene tableViewScene = new Scene(tableViewParent);
         MainUIController mainUIController = loader.getController();
-        mainUIController.setDatabaseConnection(conn, userID);
+        mainUIController.setDatabaseConnection(conn, userID, customerList, appointmentsList);
 
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
         window.setScene(tableViewScene);
         window.show();
     }
 
-    private void populateAppointmentsList()
-    {
-        try{
-
-            Calendar calendar = Calendar.getInstance();
-
-            String sqlStatement = "SELECT * FROM appointments";
-            Statement stmt = conn.createStatement();
-            ResultSet result = stmt.executeQuery(sqlStatement);
-            result.next();
-
-            do{
-
-                String contactSql = "SELECT * FROM contacts WHERE Contact_ID = '" + result.getString("Contact_ID") + "'";
-                Statement contactStmt = conn.createStatement();
-                ResultSet contactResult = contactStmt.executeQuery(contactSql);
-                contactResult.next();
-
-                String customerSql = "SELECT * FROM customers WHERE Customer_ID = '" + result.getString("Customer_ID") + "'";
-                Statement customerStmt = conn.createStatement();
-                ResultSet customerResult = customerStmt.executeQuery(customerSql);
-                customerResult.next();
-
-                appointmentsList.add(new Appointments(
-                        result.getInt("Appointment_ID"),
-                        result.getString("Title"),
-                        result.getString("Description"),
-                        result.getString("Location"),
-                        result.getString("Type"),
-                        result.getTimestamp("Start", calendar).toLocalDateTime(),
-                        result.getTimestamp("End", calendar).toLocalDateTime(),
-                        result.getTimestamp("Create_Date").toLocalDateTime(),
-                        result.getString("Created_By"),
-                        result.getTimestamp("Last_Update").toLocalDateTime(),
-                        result.getString("Last_Updated_By"),
-                        result.getInt("Customer_ID"),
-                        result.getInt("User_ID"),
-                        result.getInt("Contact_ID"),
-                        contactResult.getString("Contact_Name"),
-                        customerResult.getString("Customer_Name")
-                        )
-                );
-
-            }while(result.next());
-        }
-        catch(Exception ex) {System.out.println(ex.getMessage());}
-    }
-
-
-    public void setDatabaseConnection(Connection customerUI, Integer user)
+    public void setDatabaseConnection(Connection customerUI, Integer user, ObservableList<Customer> customer, ObservableList<Appointments> appointments)
     {
         conn = customerUI;
         userID = user;
-        populateAppointmentsList();
+        customerList = customer;
+        appointmentsList = appointments;
+
+        //populateAppointmentsList();
         setTableFilterLists();
         appointmentsTableView.setItems(currentMonthList);
 
@@ -130,7 +91,7 @@ public class AppointmentsUIController {
         Scene tableViewScene = new Scene(tableViewParent);
 
         AppointmentsAddModifyController appointmentsAddModifyController = loader.getController();
-        appointmentsAddModifyController.setDatabaseConnectionAdd(conn, userID);
+        appointmentsAddModifyController.setDatabaseConnectionAdd(conn, userID, customerList, appointmentsList);
 
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
         window.setScene(tableViewScene);
@@ -148,7 +109,7 @@ public class AppointmentsUIController {
 
         Appointments selectedAppointment = appointmentsTableView.getSelectionModel().getSelectedItem();
         AppointmentsAddModifyController appointmentsAddModifyController = loader.getController();
-        appointmentsAddModifyController.setDatabaseConnectionModify(conn, userID,selectedAppointment);
+        appointmentsAddModifyController.setDatabaseConnectionModify(conn, userID, customerList, appointmentsList, selectedAppointment);
 
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
         window.setScene(tableViewScene);
@@ -167,25 +128,26 @@ public class AppointmentsUIController {
         Appointments selectedAppointment = appointmentsTableView.getSelectionModel().getSelectedItem();
 
         ConfirmAppointmentsDeleteController confirmAppointmentsDeleteController = loader.getController();
-        confirmAppointmentsDeleteController.setSelectedCustomer(selectedAppointment, conn, appointmentsList);
+        if(currentMonth.isSelected())
+        {confirmAppointmentsDeleteController.setSelectedCustomer(selectedAppointment, conn, currentMonthList, currentWeekList, appointmentsList, appointmentsTableView);}
+        if(currentWeek.isSelected())
+        {confirmAppointmentsDeleteController.setSelectedCustomer(selectedAppointment, conn, currentWeekList, currentMonthList, appointmentsList, appointmentsTableView);}
 
         window.setScene(tableViewScene);
         window.show();
 
     }
 
-    public void updateTableByFilter()
-    {
-        if(appointmentFilter.getSelectedToggle().equals(currentMonth))
+    public void updateTableByFilter() {
+        if (appointmentFilter.getSelectedToggle().equals(currentMonth))
         {
             appointmentsTableView.setItems(currentMonthList);
         }
 
-        if(appointmentFilter.getSelectedToggle().equals(currentWeek))
+        if (appointmentFilter.getSelectedToggle().equals(currentWeek))
         {
             appointmentsTableView.setItems(currentWeekList);
         }
-
     }
 
     private void setTableFilterLists()
@@ -198,16 +160,15 @@ public class AppointmentsUIController {
             if (appointmentMonth == currentUserMonthValue){currentMonthList.add(appointmentsList.get(i));}
         }
 
+
         LocalDate weekStart;
         LocalDate weekEnd;
 
         LocalDateTime timeNow = LocalDateTime.now();
         String dayOfWeek = timeNow.getDayOfWeek().toString();
 
-        System.out.println(dayOfWeek);
-
         switch (dayOfWeek) {
-            case "Sunday":
+            case "SUNDAY":
                 weekStart = timeNow.toLocalDate();
                 weekEnd = timeNow.toLocalDate().plusDays(6);
                 break;
@@ -241,10 +202,6 @@ public class AppointmentsUIController {
                 break;
         }
 
-
-        System.out.println(weekStart.toString());
-        System.out.println(weekEnd.toString());
-
         for(int i = 0; i < appointmentsList.toArray().length;i++)
 
         {
@@ -274,6 +231,30 @@ public class AppointmentsUIController {
         currentMonth.setToggleGroup(appointmentFilter);
         currentWeek.setToggleGroup(appointmentFilter);
         currentMonth.setSelected(true);
+
+
+        Locale locale = Locale.getDefault();
+        var rb = ResourceBundle.getBundle("translation",locale);
+
+        appointmentLabel.setText(rb.getString("Appointments"));
+        viewByLabel.setText(rb.getString("ViewBy"));
+        currentMonth.setText(rb.getString("CurrentMonth"));
+        currentWeek.setText(rb.getString("CurrentWeek"));
+        appointmentIDColumn.setText(rb.getString("AppointmentID"));
+        titleColumn.setText(rb.getString("Title"));
+        descriptionColumn.setText(rb.getString("Description"));
+        locationColumn.setText(rb.getString("Location"));
+        contactNameColumn.setText(rb.getString("ContactName"));
+        typeColumn.setText(rb.getString("Type"));
+        startColumn.setText(rb.getString("Start"));
+        endColumn.setText(rb.getString("End"));
+        customerIDColumn.setText(rb.getString("CustomerID"));
+        customerNameColumn.setText(rb.getString("CustomerName"));
+        addButton.setText(rb.getString("Add"));
+        updateButton.setText(rb.getString("Update"));
+        deleteButton.setText(rb.getString("Delete"));
+        backButton.setText(rb.getString("Back"));
+
 
     }
 

@@ -23,6 +23,7 @@ import java.util.ResourceBundle;
 public class MainUIController {
 
     ObservableList<Customer> customerList = FXCollections.observableArrayList();
+    ObservableList<Appointments> appointmentsList = FXCollections.observableArrayList();
 
     //Configure the Customer Table
     @FXML private TableView<Customer> customerTableView;
@@ -54,7 +55,7 @@ public class MainUIController {
         Scene tableViewScene = new Scene(tableViewParent);
 
         CustomerAddModifyController customerAddModifyController = loader.getController();
-        customerAddModifyController.setDatabaseConnectionAdd(conn, userID);
+        customerAddModifyController.setDatabaseConnectionAdd(conn, userID, customerList, appointmentsList);
 
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
         window.setScene(tableViewScene);
@@ -73,7 +74,7 @@ public class MainUIController {
         Customer selectedCustomer = customerTableView.getSelectionModel().getSelectedItem();
 
         CustomerAddModifyController customerAddModifyController = loader.getController();
-        customerAddModifyController.setDatabaseConnectionModify(conn, userID, selectedCustomer);
+        customerAddModifyController.setDatabaseConnectionModify(conn, userID, customerList, appointmentsList, selectedCustomer);
 
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
         window.setScene(tableViewScene);
@@ -92,7 +93,6 @@ public class MainUIController {
 
         ConfirmCustomerDeleteController confirmCustomerDeleteController = loader.getController();
         confirmCustomerDeleteController.setSelectedCustomer(selectedCustomer, conn, customerList);
-
         window.setScene(tableViewScene);
         window.show();
 
@@ -107,7 +107,7 @@ public class MainUIController {
         Scene tableViewScene = new Scene(tableViewParent);
 
         AppointmentsUIController appointmentsUIController = loader.getController();
-        appointmentsUIController.setDatabaseConnection(conn, userID);
+        appointmentsUIController.setDatabaseConnection(conn, userID, customerList, appointmentsList);
 
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
         window.setScene(tableViewScene);
@@ -123,7 +123,7 @@ public class MainUIController {
         Scene tableViewScene = new Scene(tableViewParent);
 
         ReportUIController reportUIController = loader.getController();
-        reportUIController.setDatabaseConnection(conn, userID);
+        reportUIController.setDatabaseConnection(conn, userID, customerList, appointmentsList);
 
         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
         window.setScene(tableViewScene);
@@ -131,56 +131,15 @@ public class MainUIController {
     }
 
 
-    public void setDatabaseConnection(Connection loginUI, Integer user){
+    public void setDatabaseConnection(Connection loginUI, Integer user, ObservableList<Customer> customer, ObservableList<Appointments> appointments){
         conn = loginUI;
         userID = user;
-        populateCustomerTable();
+        customerList = customer;
+        appointmentsList = appointments;
+
+        customerTableView.setItems(customerList);
+
     }
-
-    private void populateCustomerTable()
-    {
-        try {
-            String sqlStatement = "SELECT * FROM customers";
-            Statement stmt = conn.createStatement();
-            ResultSet result = stmt.executeQuery(sqlStatement);
-            result.next();
-
-
-
-            do
-            {
-                String firstDivisionSql = "SELECT * FROM first_level_divisions WHERE Division_ID = '" + result.getString("Division_ID") + "'";
-                Statement firstDivisionStmt = conn.createStatement();
-                ResultSet firstDivisionResult = firstDivisionStmt.executeQuery(firstDivisionSql);
-                firstDivisionResult.next();
-
-                String countrySql = "SELECT * FROM countries WHERE Country_ID = '" + firstDivisionResult.getString("COUNTRY_ID") + "'";
-                Statement countryStmt = conn.createStatement();
-                ResultSet countryResult = countryStmt.executeQuery(countrySql);
-                countryResult.next();
-
-                customerList.add(new Customer(
-                        result.getInt("Customer_ID"),
-                        result.getString("Customer_Name"),
-                        result.getString("Address"),
-                        result.getString("Postal_Code"),
-                        result.getString("Phone"),
-                        result.getDate("Create_Date"),
-                        result.getString("Created_By"),
-                        result.getDate("Last_Update"),
-                        result.getString("Last_Updated_By"),
-                        firstDivisionResult.getString("Division"),
-                        countryResult.getString("Country")
-                        )
-                );
-
-            }while(result.next());
-
-            customerTableView.setItems(customerList);
-        }
-        catch (Exception ex){System.out.println("Error:" + ex.getMessage());}
-    }
-
 
     public void initialize()
     {

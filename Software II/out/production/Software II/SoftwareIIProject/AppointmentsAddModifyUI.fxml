@@ -13,7 +13,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="552.0" prefWidth="788.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SoftwareIIProject.AppointmentsAddModifyController">
    <children>
-      <Label fx:id="addModifyLabel" layoutX="30.0" layoutY="14.0" prefHeight="64.0" prefWidth="353.0" text="Add/Modify Appointment">
+      <Label fx:id="addModifyLabel" alignment="CENTER" layoutX="218.0" layoutY="14.0" prefHeight="64.0" prefWidth="353.0" text="Appointments">
          <font>
             <Font size="30.0" />
          </font>
@@ -22,47 +22,47 @@
          <children>
             <VBox prefHeight="424.0" prefWidth="209.0" spacing="15.0">
                <children>
-                  <Label text="Appointment ID">
+                  <Label fx:id="appointmentIDLabel" prefHeight="32.0" prefWidth="210.0" text="Appointment ID">
                      <font>
                         <Font size="22.0" />
                      </font>
                   </Label>
-                  <Label text="Title">
+                  <Label fx:id="titleLabel" prefHeight="32.0" prefWidth="261.0" text="Title">
                      <font>
                         <Font size="22.0" />
                      </font>
                   </Label>
-                  <Label text="Description">
+                  <Label fx:id="descriptionLabel" prefHeight="32.0" prefWidth="276.0" text="Description">
                      <font>
                         <Font size="22.0" />
                      </font>
                   </Label>
-                  <Label text="Location">
+                  <Label fx:id="locationLabel" prefHeight="32.0" prefWidth="244.0" text="Location">
                      <font>
                         <Font size="22.0" />
                      </font>
                   </Label>
-                  <Label text="Contact">
+                  <Label fx:id="contactLabel" prefHeight="32.0" prefWidth="259.0" text="Contact">
                      <font>
                         <Font size="22.0" />
                      </font>
                   </Label>
-                  <Label text="Type">
+                  <Label fx:id="typeLabel" prefHeight="32.0" prefWidth="287.0" text="Type">
                      <font>
                         <Font size="22.0" />
                      </font>
                   </Label>
-                  <Label text="Start Date">
+                  <Label fx:id="startDateLabel" prefHeight="32.0" prefWidth="264.0" text="Start Date">
                      <font>
                         <Font size="22.0" />
                      </font>
                   </Label>
-                  <Label text="End Date">
+                  <Label fx:id="endDateLabel" prefHeight="32.0" prefWidth="264.0" text="End Date">
                      <font>
                         <Font size="22.0" />
                      </font>
                   </Label>
-                  <Label text="Customer ID">
+                  <Label fx:id="customerIdLabel" prefHeight="32.0" prefWidth="272.0" text="Customer ID">
                      <font>
                         <Font size="22.0" />
                      </font>
@@ -94,21 +94,21 @@
             </VBox>
          </children>
       </HBox>
-      <Label layoutX="444.0" layoutY="384.0" text="Start Time">
+      <Label fx:id="startTimeLabel" layoutX="428.0" layoutY="385.0" prefHeight="32.0" prefWidth="168.0" text="Start Time">
          <font>
             <Font size="22.0" />
          </font>
       </Label>
-      <ComboBox fx:id="startTimeComboBox" layoutX="561.0" layoutY="388.0" prefWidth="150.0" />
-      <Label layoutX="444.0" layoutY="433.0" prefHeight="32.0" prefWidth="99.0" text="End Time">
+      <ComboBox fx:id="startTimeComboBox" layoutX="587.0" layoutY="389.0" prefWidth="150.0" />
+      <Label fx:id="endTimeLabel" layoutX="428.0" layoutY="434.0" prefHeight="32.0" prefWidth="133.0" text="End Time">
          <font>
             <Font size="22.0" />
          </font>
       </Label>
-      <ComboBox fx:id="endTimeComboBox" layoutX="561.0" layoutY="437.0" prefWidth="150.0" />
-      <Button layoutX="722.0" layoutY="514.0" mnemonicParsing="false" onAction="#backToAppointments" text="Cancel" />
-      <Button layoutX="659.0" layoutY="514.0" mnemonicParsing="false" onAction="#saveAppointments" prefHeight="25.0" prefWidth="52.0" text="Save" />
-      <Label fx:id="errorLabel" layoutX="494.0" layoutY="102.0" prefHeight="225.0" prefWidth="243.0" text="Error Label">
+      <ComboBox fx:id="endTimeComboBox" layoutX="587.0" layoutY="438.0" prefWidth="150.0" />
+      <Button fx:id="cancelButton" layoutX="691.0" layoutY="514.0" mnemonicParsing="false" onAction="#backToAppointments" prefHeight="25.0" prefWidth="83.0" text="Cancel" />
+      <Button fx:id="saveButton" layoutX="595.0" layoutY="514.0" mnemonicParsing="false" onAction="#saveAppointments" prefHeight="25.0" prefWidth="83.0" text="Save" />
+      <Label fx:id="errorLabel" layoutX="494.0" layoutY="102.0" prefHeight="225.0" prefWidth="243.0">
          <font>
             <Font size="22.0" />
          </font>
