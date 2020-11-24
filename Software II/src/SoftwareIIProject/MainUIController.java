@@ -21,7 +21,9 @@ import java.util.Calendar;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-
+/**
+ * Controller for Main UI
+ */
 public class MainUIController {
 
     private ObservableList<Customer> customerList = FXCollections.observableArrayList();
@@ -47,10 +49,14 @@ public class MainUIController {
     @FXML private Button exitButton;
     @FXML private Label errorLabel;
 
-
     private Connection conn;
     private Integer userID;
 
+    /**
+     * Passes database Connection, lists, and User ID to CustomerAdd/Modify scene
+     * @param event add Button Pushed
+     * @throws IOException Throws Exception
+     */
     public void addButtonPushed(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("CustomerAddModifyUI.fxml"));
@@ -66,7 +72,11 @@ public class MainUIController {
         window.show();
     }
 
-
+    /**
+     * Passes database Connection, lists, User ID, and selected Customer to CustomerAdd/Modify scene
+     * @param event modify Button Pushed
+     * @throws IOException Throws Exception
+     */
     public void updateButtonPushed(ActionEvent event) throws IOException {
 
         Locale locale = Locale.getDefault();
@@ -93,7 +103,10 @@ public class MainUIController {
 
     }
 
-
+    /**
+     * Passes Customer list, selected Customer and database Connection to confirm delete scene
+     * @throws IOException Throws Exception
+     */
     public void deleteButtonPushed() throws  IOException {
 
         Locale locale = Locale.getDefault();
@@ -118,6 +131,11 @@ public class MainUIController {
         else{errorLabel.setText(rb.getString("NoItem"));}
     }
 
+    /**
+     * Passes Lists, userID and database connection to Appointment scene
+     * @param event appointment button pushed
+     * @throws IOException Throws exception
+     */
     public void appointmentsButtonPushed(ActionEvent event) throws IOException
     {
         FXMLLoader loader = new FXMLLoader();
@@ -134,6 +152,11 @@ public class MainUIController {
         window.show();
     }
 
+    /**
+     * Passes Lists, userID and database connection to Report scene
+     * @param event reports button pushed
+     * @throws IOException Throws exception
+     */
     public void reportsButtonPushed(ActionEvent event) throws IOException
     {
         FXMLLoader loader = new FXMLLoader();
@@ -150,7 +173,14 @@ public class MainUIController {
         window.show();
     }
 
-
+    /**
+     * Sets lists, User ID, database Connection and Customer table.
+     * Also checks database for upcoming appointments
+     * @param loginUI Database Connection
+     * @param user user ID
+     * @param customer Customer List
+     * @param appointments Appointment List
+     */
     public void setDatabaseConnection(Connection loginUI, Integer user, ObservableList<Customer> customer, ObservableList<Appointments> appointments){
         conn = loginUI;
         userID = user;
@@ -162,6 +192,9 @@ public class MainUIController {
 
     }
 
+    /**
+     * Checks database for appointments with 15 mins of User's logon and displays appropriate message
+     */
     private void checkUpcomingAppointments(){
 
         try {
@@ -186,7 +219,10 @@ public class MainUIController {
         catch (Exception ex){System.out.println(ex.getMessage());}
     }
 
-
+    /**
+     * Sets Customer Table
+     * Sets Labels and Buttons for User's language (English or French)
+     */
     public void initialize()
     {
         //Set up Customer table Columns
@@ -223,10 +259,13 @@ public class MainUIController {
 
     }
 
+    /**
+     * Exits program and closes database Connection
+     * @throws SQLException Throws Exception
+     */
     public void exitButtonPushed() throws SQLException {
         conn.close();
         System.exit(0);
     }
-
 
 }

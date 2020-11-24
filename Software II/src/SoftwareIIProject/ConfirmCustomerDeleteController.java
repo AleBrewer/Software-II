@@ -9,6 +9,9 @@ import java.sql.Statement;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+/**
+ * Confirm delete customer controller
+ */
 public class ConfirmCustomerDeleteController {
 
     @FXML private Button cancelButton;
@@ -23,15 +26,19 @@ public class ConfirmCustomerDeleteController {
     private Connection conn;
     private ObservableList<Customer> customerList;
 
-
+    /**
+     * Closes Window when cancel is pushed
+     */
     @FXML private void cancelButtonPushed(){
         Stage stage = (Stage) cancelButton.getScene().getWindow();
         stage.close();
     }
 
+    /**
+     * Removes selected Customer from Database and Customer List along with all appointments associated with that customer
+     */
     @FXML private void deleteButtonPushed(){
         try {
-
             String deleteAppointmentsSql = "DELETE FROM appointments WHERE Customer_ID = '" + selectedCustomer.getId() +"'";
             Statement deleteStmt = conn.createStatement();
             deleteStmt.executeUpdate(deleteAppointmentsSql);
@@ -39,7 +46,6 @@ public class ConfirmCustomerDeleteController {
             String sqlStatement = "DELETE FROM customers WHERE Customer_ID = '" + selectedCustomer.getId() + "'";
             Statement stmt = conn.createStatement();
             stmt.executeUpdate(sqlStatement);
-
         }
         catch(Exception ex){System.out.println(ex.getMessage());}
 
@@ -48,17 +54,24 @@ public class ConfirmCustomerDeleteController {
         stage.close();
     }
 
-
+    /**
+     * Sets the customer list, database connection and selected customer
+     * @param customer Selected Customer
+     * @param databaseConnection Database Connection
+     * @param list Customer list
+     */
     public void setSelectedCustomer(Customer customer, Connection databaseConnection, ObservableList<Customer> list) {
         selectedCustomer = customer;
         conn = databaseConnection;
         customerList = list;
     }
 
+    /**
+     * Set language for window (English or french)
+     */
     public void initialize() {
 
         //Set Language
-        //Locale.setDefault(new Locale("fr"));
         Locale locale = Locale.getDefault();
         var rb = ResourceBundle.getBundle("translation",locale);
 

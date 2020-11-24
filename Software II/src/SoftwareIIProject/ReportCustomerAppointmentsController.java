@@ -17,7 +17,9 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-
+/**
+ * Controller for Customer Appointments Report
+ */
 public class ReportCustomerAppointmentsController {
 
     private Connection conn;
@@ -70,6 +72,10 @@ public class ReportCustomerAppointmentsController {
     private ObservableList<Appointments> appointmentsList = FXCollections.observableArrayList();
     private final ArrayList<String> appointmentTypesList = new ArrayList<>();
 
+    /**
+     * Creates report and outputs Types and quantities of appointments for each month
+     * Lambda Expression used here to create a Types list and ensure there aren't duplicates for the same type
+     */
     private void createReport()
     {
 
@@ -188,7 +194,11 @@ public class ReportCustomerAppointmentsController {
     }
 
 
-
+    /**
+     * Returns User to reports Scene
+     * @param event Back button Pushed
+     * @throws IOException throws exception
+     */
     public void backToAppointments(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("ReportsUI.fxml"));
@@ -204,7 +214,13 @@ public class ReportCustomerAppointmentsController {
         window.show();
     }
 
-
+    /**
+     * Sets database Connection, lists, and user ID. Starts report running
+     * @param loginUI Database connection
+     * @param user User ID
+     * @param customers Customer List
+     * @param appointments Appointment List
+     */
     public void setDatabaseConnection(Connection loginUI, Integer user, ObservableList<Customer> customers, ObservableList<Appointments> appointments){
         conn = loginUI;
         userID = user;
@@ -213,7 +229,11 @@ public class ReportCustomerAppointmentsController {
         createReport();
     }
 
-
+    /**
+     * Checks appointment list for Type and Quantity for each month and returns String Array with all type and quantities in order
+     * @param monthSelected Month of year to check
+     * @return String array with all types that month and the quantities of each Type
+     */
     private ArrayList<String> getTypeAndNumber(ObservableList<Appointments> monthSelected){
 
         StringBuilder typeString = new StringBuilder();
@@ -244,7 +264,9 @@ public class ReportCustomerAppointmentsController {
 
     }
 
-
+    /**
+     * Sets labels for User's language (English or French)
+     */
     public void initialize() {
         Locale locale = Locale.getDefault();
         var rb = ResourceBundle.getBundle("translation", locale);

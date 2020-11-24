@@ -20,6 +20,9 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.TimeZone;
 
+/**
+ * Controller for Login Scene
+ */
 public class LoginUIController {
 
     private final ObservableList<Appointments> appointmentsList = FXCollections.observableArrayList();
@@ -38,6 +41,12 @@ public class LoginUIController {
 
     private Connection conn;
 
+    /**
+     * Checks inputs for password and login against all authorized Users in database.
+     * If failed, writes to Login Text file and displays Error message
+     * If succeeds, writes to Login Text file and creates Customer list and Appointments list and passes them to the MainUI Controller
+     * @param event login Button pushed
+     */
 
     public void loginButton (ActionEvent event) {
 
@@ -96,14 +105,18 @@ public class LoginUIController {
         catch (Exception ex){System.out.println(ex.getMessage());}
     }
 
-
+    /**
+     * Exits program and closes database connection
+     * @throws SQLException Throws Exception
+     */
     public void exitButtonPushed() throws SQLException {
         conn.close();
-        System.out.println("Closed Database");
         System.exit(0);
     }
 
-
+    /**
+     * Builds Customer objects from database information and add items to Customer List
+     */
     private void populateCustomerList() {
         try {
             String sqlStatement = "SELECT * FROM customers";
@@ -143,6 +156,9 @@ public class LoginUIController {
         catch (Exception ex) { System.out.println("Error:" + ex.getMessage()); }
     }
 
+    /**
+     * Builds Appointment Objects from database and populates Appointments List
+     */
     private void populateAppointmentsList()
     {
         try{
@@ -191,7 +207,10 @@ public class LoginUIController {
         catch(Exception ex) {System.out.println(ex.getMessage());}
     }
 
-
+    /**
+     * Establishes connection to the database, Displays users timezone and Country,
+     * sets Language base on user's language (English or French)
+     */
     public void initialize()
     {
         //Establish Connection with the Database
@@ -203,7 +222,7 @@ public class LoginUIController {
 
             conn = DriverManager.getConnection(url, username, password);
         }
-        catch (Exception ex) { System.out.println("Error:" + ex.getMessage()); }
+        catch (Exception ex) { loginErrorLabel.setText(ex.getMessage()); }
 
         //Find TimeZone and Country
         Calendar calendar = Calendar.getInstance();
@@ -213,7 +232,6 @@ public class LoginUIController {
         countryLabel.setText(country.getCountry());
 
         //Set your Language
-        Locale.setDefault(new Locale("fr"));
         Locale locale = Locale.getDefault();
         var rb = ResourceBundle.getBundle("translation",locale);
 

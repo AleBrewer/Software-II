@@ -6,6 +6,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+/**
+ * Class that start the program and sets Login UI Scene
+ */
 public class Main extends Application {
 
     @Override

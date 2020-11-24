@@ -20,6 +20,9 @@ import java.sql.Statement;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+/**
+ * Controller for Contact's Schedule Report
+ */
 public class ReportsContactScheduleController {
 
     private ObservableList<Appointments> appointmentsList = FXCollections.observableArrayList();
@@ -44,7 +47,9 @@ public class ReportsContactScheduleController {
     @FXML private Label viewAppointmentsForLabel;
     @FXML private Button backButton;
 
-
+    /**
+     * Updates tables based on Contact selected in ComboBox
+     */
     public void updateTableView()
     {
         ObservableList<Appointments> updateList = FXCollections.observableArrayList();
@@ -58,6 +63,11 @@ public class ReportsContactScheduleController {
 
     }
 
+    /**
+     * Returns user to Report UI passes lists, User ID, and database Connection
+     * @param event back button pushed
+     * @throws IOException throws exception
+     */
     public void backToAppointments(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("ReportsUI.fxml"));
@@ -73,7 +83,14 @@ public class ReportsContactScheduleController {
         window.show();
     }
 
-
+    /**
+     * Sets Lists, Connection, User ID for the Scene
+     * Sets Contact ComboBox and sets appointmentTableView
+     * @param customerUI database Connection
+     * @param user User ID
+     * @param customer Customer list
+     * @param appointments Appointments list
+     */
     public void setDatabaseConnection(Connection customerUI, Integer user, ObservableList<Customer> customer, ObservableList<Appointments> appointments)
     {
         conn = customerUI;
@@ -84,6 +101,9 @@ public class ReportsContactScheduleController {
         appointmentsTableView.setItems(appointmentsList);
     }
 
+    /**
+     * Sets Contact ComboBox
+     */
     private void setContactComboBox() {
         try {
             String sqlStatement = "SELECT * FROM contacts";
@@ -99,6 +119,9 @@ public class ReportsContactScheduleController {
         }
     }
 
+    /**
+     * Set Table View and Language based off User's default Language (English or French)
+     */
     public void initialize()
     {
 

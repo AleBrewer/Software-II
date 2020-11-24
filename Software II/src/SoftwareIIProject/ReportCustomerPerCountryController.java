@@ -16,6 +16,9 @@ import java.sql.Connection;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+/**
+ * Controller for Customers per Country
+ */
 public class ReportCustomerPerCountryController {
 
     private ObservableList<Appointments> appointmentsList = FXCollections.observableArrayList();
@@ -30,6 +33,11 @@ public class ReportCustomerPerCountryController {
     @FXML private Label customerPerCountryLabel;
     @FXML private Button backButton;
 
+    /**
+     * Returns user to Reports UI passes lists, UserID and Database Connection
+     * @param event Back Button pushed
+     * @throws IOException Throws Exception
+     */
     public void backToAppointments(ActionEvent event) throws IOException {
 
         FXMLLoader loader = new FXMLLoader();
@@ -47,6 +55,9 @@ public class ReportCustomerPerCountryController {
 
     }
 
+    /**
+     * Checks customer List for what country each Customer is from and adds it to the count. Displays count.
+     */
     private void setCountryLabels()
     {
         int usCount = 0;
@@ -65,6 +76,13 @@ public class ReportCustomerPerCountryController {
 
     }
 
+    /**
+     * Sets lists, UserID, and database Connection for the Scene
+     * @param customerUI Database Connection
+     * @param user User ID
+     * @param customer Customer List
+     * @param appointments Appointment List
+     */
     public void setDatabaseConnection(Connection customerUI, Integer user, ObservableList<Customer> customer, ObservableList<Appointments> appointments)
     {
         conn = customerUI;
@@ -74,6 +92,9 @@ public class ReportCustomerPerCountryController {
         setCountryLabels();
     }
 
+    /**
+     * Sets Language for the Scene base on User's Language (English or French)
+     */
     public void initialize()
     {
         Locale locale = Locale.getDefault();
