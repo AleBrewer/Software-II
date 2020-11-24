@@ -1,6 +1,4 @@
 package SoftwareIIProject;
-
-import javafx.beans.Observable;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -23,8 +21,7 @@ public class ConfirmCustomerDeleteController {
     @FXML private Customer selectedCustomer;
 
     private Connection conn;
-    ObservableList<Customer> customerList;
-    ObservableList<Appointments> appointmentsList;
+    private ObservableList<Customer> customerList;
 
 
     @FXML private void cancelButtonPushed(){

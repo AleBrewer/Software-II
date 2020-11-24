@@ -22,7 +22,7 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <Button fx:id="cancelButton" layoutX="323.0" layoutY="173.0" mnemonicParsing="false" onAction="#cancelButtonPushed" text="Cancel" />
-      <Button fx:id="deleteButton" layoutX="266.0" layoutY="173.0" mnemonicParsing="false" onAction="#deleteButtonPushed" text="Delete" />
+      <Button fx:id="cancelButton" layoutX="308.0" layoutY="173.0" mnemonicParsing="false" onAction="#cancelButtonPushed" prefHeight="25.0" prefWidth="67.0" text="Cancel" />
+      <Button fx:id="deleteButton" layoutX="218.0" layoutY="173.0" mnemonicParsing="false" onAction="#deleteButtonPushed" prefHeight="25.0" prefWidth="76.0" text="Delete" />
    </children>
 </AnchorPane>

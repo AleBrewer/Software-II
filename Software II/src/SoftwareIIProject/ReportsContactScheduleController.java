@@ -8,9 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
@@ -19,6 +17,8 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 public class ReportsContactScheduleController {
 
@@ -41,6 +41,8 @@ public class ReportsContactScheduleController {
 
     @FXML private ComboBox<String> contactComboBox;
 
+    @FXML private Label viewAppointmentsForLabel;
+    @FXML private Button backButton;
 
 
     public void updateTableView()
@@ -110,6 +112,26 @@ public class ReportsContactScheduleController {
         endColumn.setCellValueFactory(new PropertyValueFactory<>("end"));
         customerIDColumn.setCellValueFactory(new PropertyValueFactory<>("customerID"));
         customerNameColumn.setCellValueFactory(new PropertyValueFactory<>("customerName"));
+
+        Locale locale = Locale.getDefault();
+        var rb = ResourceBundle.getBundle("translation",locale);
+
+        appointmentIDColumn.setText(rb.getString("AppointmentID"));
+        titleColumn.setText(rb.getString("Title"));
+        descriptionColumn.setText(rb.getString("Description"));
+        locationColumn.setText(rb.getString("Location"));
+        contactNameColumn.setText(rb.getString("ContactName"));
+        typeColumn.setText(rb.getString("Type"));
+        startColumn.setText(rb.getString("Start"));
+        endColumn.setText(rb.getString("End"));
+        customerIDColumn.setText(rb.getString("CustomerID"));
+        customerNameColumn.setText(rb.getString("CustomerName"));
+
+        viewAppointmentsForLabel.setText(rb.getString("ViewAppointmentsFor"));
+        backButton.setText(rb.getString("Back"));
+
+
+
 
     }
 

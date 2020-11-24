@@ -66,12 +66,21 @@ public class ReportCustomerAppointmentsController {
     @FXML Label decemberLabel;
 
 
-    ObservableList<Customer> customerList = FXCollections.observableArrayList();
-    ObservableList<Appointments> appointmentsList = FXCollections.observableArrayList();
-    ArrayList<String> appointmentTypesList = new ArrayList<>();
+    private ObservableList<Customer> customerList = FXCollections.observableArrayList();
+    private ObservableList<Appointments> appointmentsList = FXCollections.observableArrayList();
+    private final ArrayList<String> appointmentTypesList = new ArrayList<>();
 
     private void createReport()
     {
+
+        appointmentsList.forEach( n -> { String newItem = n.getType();
+
+            if (!appointmentTypesList.contains(newItem))
+            {appointmentTypesList.add(n.getType());}
+        });
+
+
+
         ObservableList<Appointments> janList = FXCollections.observableArrayList();
         ObservableList<Appointments> febList = FXCollections.observableArrayList();
         ObservableList<Appointments> marList = FXCollections.observableArrayList();
@@ -201,7 +210,6 @@ public class ReportCustomerAppointmentsController {
         userID = user;
         customerList = customers;
         appointmentsList = appointments;
-        setAppointmentTypesList();
         createReport();
     }
 
@@ -234,16 +242,6 @@ public class ReportCustomerAppointmentsController {
 
         return returnValues;
 
-    }
-
-    private void setAppointmentTypesList()
-    {
-        for (Appointments appointments : appointmentsList) {
-            String newItem = appointments.getType();
-            if (!appointmentTypesList.contains(newItem)) {
-                appointmentTypesList.add(newItem);
-            }
-        }
     }
 
 

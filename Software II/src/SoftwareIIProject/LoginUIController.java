@@ -12,7 +12,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import java.io.*;
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -20,9 +22,8 @@ import java.util.TimeZone;
 
 public class LoginUIController {
 
-    ObservableList<Appointments> appointmentsList = FXCollections.observableArrayList();
-    ObservableList<Customer> customerList = FXCollections.observableArrayList();
-
+    private final ObservableList<Appointments> appointmentsList = FXCollections.observableArrayList();
+    private final ObservableList<Customer> customerList = FXCollections.observableArrayList();
 
     @FXML private Label userLoginLabel;
     @FXML private Label userIDLabel;
@@ -35,16 +36,13 @@ public class LoginUIController {
     @FXML private TextField userIDTextField;
     @FXML private TextField passwordTextField;
 
-    Connection conn;
-    Integer userIDNumber;
-
-
-
+    private Connection conn;
 
 
     public void loginButton (ActionEvent event) {
 
         try {
+            Writer loginWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("login_activity.txt", true)));
 
             String userID;
             String password;
@@ -56,6 +54,8 @@ public class LoginUIController {
             Statement stmt = conn.createStatement();
             ResultSet result = stmt.executeQuery(sqlStatement);
 
+            Locale locale = Locale.getDefault();
+            var rb = ResourceBundle.getBundle("translation",locale);
 
             while(result.next())
             {
@@ -65,8 +65,10 @@ public class LoginUIController {
                     {
                         populateCustomerList();
                         populateAppointmentsList();
+                        loginWriter.write(System.lineSeparator() + "Login Successful at " + LocalDateTime.now());
+                        loginWriter.close();
 
-                        userIDNumber = Integer.parseInt(result.getString("User_ID"));
+                        Integer userIDNumber = Integer.parseInt(result.getString("User_ID"));
                         FXMLLoader loader = new FXMLLoader();
                         loader.setLocation(getClass().getResource("MainUI.fxml"));
                         Parent tableViewParent = loader.load();
@@ -78,14 +80,18 @@ public class LoginUIController {
 
                         Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
 
-                        window.setTitle("Customer Appointment Scheduler");
                         window.setScene(tableViewScene);
                         window.show();
                     }
-                    else {loginErrorLabel.setText("Incorrect UserID or Password");}
+
                 }
-                else {loginErrorLabel.setText("Incorrect UserID or Password");}
+
             }
+
+            loginErrorLabel.setText(rb.getString("IncorrectUsernamePassword"));
+            loginWriter.write(System.lineSeparator() + "Login failed at " + LocalDateTime.now());
+            loginWriter.close();
+
         }
         catch (Exception ex){System.out.println(ex.getMessage());}
     }
@@ -98,16 +104,14 @@ public class LoginUIController {
     }
 
 
-    private void populateCustomerList()
-    {
+    private void populateCustomerList() {
         try {
             String sqlStatement = "SELECT * FROM customers";
             Statement stmt = conn.createStatement();
             ResultSet result = stmt.executeQuery(sqlStatement);
-            result.next();
 
-            do
-            {
+
+            while (result.next()) {
                 String firstDivisionSql = "SELECT * FROM first_level_divisions WHERE Division_ID = '" + result.getString("Division_ID") + "'";
                 Statement firstDivisionStmt = conn.createStatement();
                 ResultSet firstDivisionResult = firstDivisionStmt.executeQuery(firstDivisionSql);
@@ -133,12 +137,11 @@ public class LoginUIController {
                         )
                 );
 
-            }while(result.next());
 
+            }
         }
-        catch (Exception ex){System.out.println("Error:" + ex.getMessage());}
+        catch (Exception ex) { System.out.println("Error:" + ex.getMessage()); }
     }
-
 
     private void populateAppointmentsList()
     {
@@ -189,10 +192,6 @@ public class LoginUIController {
     }
 
 
-
-
-
-
     public void initialize()
     {
         //Establish Connection with the Database
@@ -203,7 +202,6 @@ public class LoginUIController {
             String password = "53688897357";
 
             conn = DriverManager.getConnection(url, username, password);
-            System.out.println("Connected to Database");
         }
         catch (Exception ex) { System.out.println("Error:" + ex.getMessage()); }
 

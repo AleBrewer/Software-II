@@ -7,7 +7,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="315.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SoftwareIIProject.ReportCustomerPerCountryController">
    <children>
-      <Label layoutX="127.0" layoutY="32.0" text="Customers per Country">
+      <Label fx:id="customerPerCountryLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="127.0" layoutY="32.0" text="Customers per Country">
          <font>
             <Font size="34.0" />
          </font>
@@ -42,6 +42,6 @@
             <Font size="32.0" />
          </font>
       </Label>
-      <Button layoutX="491.0" layoutY="276.0" mnemonicParsing="false" onAction="#backToAppointments" prefHeight="25.0" prefWidth="95.0" text="Back" />
+      <Button fx:id="backButton" layoutX="480.0" layoutY="276.0" mnemonicParsing="false" onAction="#backToAppointments" prefHeight="25.0" prefWidth="106.0" text="Back" />
    </children>
 </AnchorPane>

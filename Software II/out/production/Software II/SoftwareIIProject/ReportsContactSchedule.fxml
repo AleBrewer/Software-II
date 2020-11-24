@@ -8,16 +8,15 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="521.0" prefWidth="1043.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SoftwareIIProject.ReportsContactScheduleController">
    <children>
-      <Label layoutX="226.0" layoutY="46.0" text="View Appointments for">
+      <Label fx:id="viewAppointmentsForLabel" layoutX="226.0" layoutY="46.0" text="View Appointments for">
          <font>
             <Font size="27.0" />
          </font>
       </Label>
       <ComboBox fx:id="contactComboBox" layoutX="520.0" layoutY="48.0" onAction="#updateTableView" prefHeight="39.0" prefWidth="155.0" />
-      <Button layoutX="907.0" layoutY="474.0" mnemonicParsing="false" onAction="#backToAppointments" prefHeight="25.0" prefWidth="109.0" text="Back" />
+      <Button fx:id="backButton" layoutX="907.0" layoutY="474.0" mnemonicParsing="false" onAction="#backToAppointments" prefHeight="25.0" prefWidth="109.0" text="Back" />
       <TableView fx:id="appointmentsTableView" layoutX="28.0" layoutY="112.0" prefHeight="340.0" prefWidth="988.0">
          <columns>
             <TableColumn fx:id="appointmentIDColumn" prefWidth="102.0" text="Appointment ID" />

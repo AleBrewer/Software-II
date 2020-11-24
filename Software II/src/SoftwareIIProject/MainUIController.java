@@ -16,14 +16,16 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.sql.*;
+import java.time.LocalDateTime;
+import java.util.Calendar;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
 
 public class MainUIController {
 
-    ObservableList<Customer> customerList = FXCollections.observableArrayList();
-    ObservableList<Appointments> appointmentsList = FXCollections.observableArrayList();
+    private ObservableList<Customer> customerList = FXCollections.observableArrayList();
+    private ObservableList<Appointments> appointmentsList = FXCollections.observableArrayList();
 
     //Configure the Customer Table
     @FXML private TableView<Customer> customerTableView;
@@ -36,15 +38,17 @@ public class MainUIController {
     @FXML private TableColumn<Customer, String> customerCountryColumn;
 
     @FXML private Label customersLabel;
+    @FXML private Label upcomingAppointmentLabel;
     @FXML private Button addButton;
     @FXML private Button updateButton;
     @FXML private Button deleteButton;
     @FXML private Button appointmentsButton;
     @FXML private Button reportsButton;
     @FXML private Button exitButton;
+    @FXML private Label errorLabel;
 
 
-    Connection conn;
+    private Connection conn;
     private Integer userID;
 
     public void addButtonPushed(ActionEvent event) throws IOException {
@@ -64,38 +68,54 @@ public class MainUIController {
 
 
     public void updateButtonPushed(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("CustomerAddModifyUI.fxml"));
-        Parent tableViewParent = loader.load();
 
-        Scene tableViewScene = new Scene(tableViewParent);
+        Locale locale = Locale.getDefault();
+        var rb = ResourceBundle.getBundle("translation",locale);
+
+        if(customerTableView.getSelectionModel().getSelectedItem() != null) {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("CustomerAddModifyUI.fxml"));
+            Parent tableViewParent = loader.load();
+
+            Scene tableViewScene = new Scene(tableViewParent);
 
 
-        Customer selectedCustomer = customerTableView.getSelectionModel().getSelectedItem();
+            Customer selectedCustomer = customerTableView.getSelectionModel().getSelectedItem();
 
-        CustomerAddModifyController customerAddModifyController = loader.getController();
-        customerAddModifyController.setDatabaseConnectionModify(conn, userID, customerList, appointmentsList, selectedCustomer);
+            CustomerAddModifyController customerAddModifyController = loader.getController();
+            customerAddModifyController.setDatabaseConnectionModify(conn, userID, customerList, appointmentsList, selectedCustomer);
 
-        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-        window.setScene(tableViewScene);
-        window.show();
+            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            window.setScene(tableViewScene);
+            window.show();
+        }
+        else{errorLabel.setText(rb.getString("NoItem"));}
+
     }
 
+
     public void deleteButtonPushed() throws  IOException {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("ConfirmCustomerDelete.fxml"));
-        Parent tableViewParent = loader.load();
 
-        Scene tableViewScene = new Scene(tableViewParent);
-        Stage window = new Stage();
+        Locale locale = Locale.getDefault();
+        var rb = ResourceBundle.getBundle("translation",locale);
 
-        Customer selectedCustomer = customerTableView.getSelectionModel().getSelectedItem();
+        if(customerTableView.getSelectionModel().getSelectedItem() != null) {
 
-        ConfirmCustomerDeleteController confirmCustomerDeleteController = loader.getController();
-        confirmCustomerDeleteController.setSelectedCustomer(selectedCustomer, conn, customerList);
-        window.setScene(tableViewScene);
-        window.show();
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("ConfirmCustomerDelete.fxml"));
+            Parent tableViewParent = loader.load();
 
+            Scene tableViewScene = new Scene(tableViewParent);
+            Stage window = new Stage();
+
+            Customer selectedCustomer = customerTableView.getSelectionModel().getSelectedItem();
+
+            ConfirmCustomerDeleteController confirmCustomerDeleteController = loader.getController();
+            confirmCustomerDeleteController.setSelectedCustomer(selectedCustomer, conn, customerList);
+            window.setScene(tableViewScene);
+            window.show();
+        }
+        else{errorLabel.setText(rb.getString("NoItem"));}
     }
 
     public void appointmentsButtonPushed(ActionEvent event) throws IOException
@@ -138,8 +158,34 @@ public class MainUIController {
         appointmentsList = appointments;
 
         customerTableView.setItems(customerList);
+        checkUpcomingAppointments();
 
     }
+
+    private void checkUpcomingAppointments(){
+
+        try {
+            String checkAppointmentSql = "SELECT * FROM appointments";
+            Statement checkAppointmentStmt = conn.createStatement();
+            ResultSet checkAppointmentResults = checkAppointmentStmt.executeQuery(checkAppointmentSql);
+
+            Locale locale = Locale.getDefault();
+            var rb = ResourceBundle.getBundle("translation",locale);
+            LocalDateTime timeNow = LocalDateTime.now();
+            Calendar calendar = Calendar.getInstance();
+
+            while(checkAppointmentResults.next())
+            {
+                if(        checkAppointmentResults.getTimestamp("Start", calendar).toLocalDateTime().isAfter(timeNow)
+                        && checkAppointmentResults.getTimestamp("Start", calendar).toLocalDateTime().isBefore(timeNow.plusMinutes(15)))
+                {
+                    upcomingAppointmentLabel.setText(rb.getString("AppointmentUpcoming"));
+                }
+            }
+        }
+        catch (Exception ex){System.out.println(ex.getMessage());}
+    }
+
 
     public void initialize()
     {
@@ -153,11 +199,11 @@ public class MainUIController {
         customerCountryColumn.setCellValueFactory(new PropertyValueFactory<>("country"));
 
         //Set up Language
-        //Locale.setDefault(new Locale("fr"));
         Locale locale = Locale.getDefault();
         var rb = ResourceBundle.getBundle("translation",locale);
 
         customersLabel.setText(rb.getString("Customer"));
+        upcomingAppointmentLabel.setText(rb.getString("NoUpcomingAppointments"));
 
         customerIDColumn.setText(rb.getString("ID"));
         customerNameColumn.setText(rb.getString("Name"));
@@ -174,11 +220,11 @@ public class MainUIController {
         reportsButton.setText(rb.getString("Reports"));
         exitButton.setText(rb.getString("Exit"));
 
+
     }
 
     public void exitButtonPushed() throws SQLException {
         conn.close();
-        System.out.println("Closed Database");
         System.exit(0);
     }
 

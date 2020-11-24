@@ -18,12 +18,15 @@ import java.time.LocalDateTime;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-
+/**
+ * Controller for Appointments UI
+ */
 public class AppointmentsUIController {
 
-    ObservableList<Appointments> appointmentsList = FXCollections.observableArrayList();
-    ObservableList<Customer> customerList = FXCollections.observableArrayList();
+    private ObservableList<Appointments> appointmentsList = FXCollections.observableArrayList();
+    private ObservableList<Customer> customerList = FXCollections.observableArrayList();
 
+    //Set TableView
     @FXML TableView<Appointments> appointmentsTableView;
     @FXML private TableColumn<Appointments, Integer> appointmentIDColumn;
     @FXML private TableColumn<Appointments, String> titleColumn;
@@ -36,12 +39,12 @@ public class AppointmentsUIController {
     @FXML private TableColumn<Appointments, Integer> customerIDColumn;
     @FXML private TableColumn<Appointments, String> customerNameColumn;
 
-
+    //Set Toggle Group
     @FXML private ToggleGroup appointmentFilter;
     @FXML private RadioButton currentMonth;
     @FXML private RadioButton currentWeek;
-    ObservableList<Appointments> currentMonthList = FXCollections.observableArrayList();
-    ObservableList<Appointments> currentWeekList = FXCollections.observableArrayList();
+    private final ObservableList<Appointments> currentMonthList = FXCollections.observableArrayList();
+    private final ObservableList<Appointments> currentWeekList = FXCollections.observableArrayList();
 
 
     @FXML private Label appointmentLabel;
@@ -50,11 +53,16 @@ public class AppointmentsUIController {
     @FXML private Button updateButton;
     @FXML private Button deleteButton;
     @FXML private Button backButton;
+    @FXML private Label errorLabel;
 
-    Connection conn;
+    private Connection conn;
     private Integer userID;
 
-
+    /**
+     * Returns User to Main UI
+     * @param event Back Button Pushed
+     * @throws IOException Throw Exception
+     */
     public void backButton(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(getClass().getResource("MainUI.fxml"));
@@ -69,19 +77,12 @@ public class AppointmentsUIController {
         window.show();
     }
 
-    public void setDatabaseConnection(Connection customerUI, Integer user, ObservableList<Customer> customer, ObservableList<Appointments> appointments)
-    {
-        conn = customerUI;
-        userID = user;
-        customerList = customer;
-        appointmentsList = appointments;
 
-        //populateAppointmentsList();
-        setTableFilterLists();
-        appointmentsTableView.setItems(currentMonthList);
-
-    }
-
+    /**
+     * Takes User the the Add Appointment Scene, passes Database Connection, UserID, CustomerList, and Appointment List
+     * @param event Add Button Pushed
+     * @throws IOException Throws Exception
+     */
     public void addAppointmentsButton(ActionEvent event) throws IOException
     {
         FXMLLoader loader = new FXMLLoader();
@@ -99,45 +100,70 @@ public class AppointmentsUIController {
 
     }
 
+    /**
+     * Takes User the the Update Appointment Scene, passes Database Connection, UserID, CustomerList, and Appointment List
+     * @param event Add Button Pushed
+     * @throws IOException Throws Exception
+     */
     public void updateAppointments(ActionEvent event) throws IOException
     {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("AppointmentsAddModifyUI.fxml"));
-        Parent tableViewParent = loader.load();
+        Locale locale = Locale.getDefault();
+        var rb = ResourceBundle.getBundle("translation",locale);
 
-        Scene tableViewScene = new Scene(tableViewParent);
+        if(appointmentsTableView.getSelectionModel().getSelectedItem() != null) {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("AppointmentsAddModifyUI.fxml"));
+            Parent tableViewParent = loader.load();
 
-        Appointments selectedAppointment = appointmentsTableView.getSelectionModel().getSelectedItem();
-        AppointmentsAddModifyController appointmentsAddModifyController = loader.getController();
-        appointmentsAddModifyController.setDatabaseConnectionModify(conn, userID, customerList, appointmentsList, selectedAppointment);
+            Scene tableViewScene = new Scene(tableViewParent);
 
-        Stage window = (Stage)((Node)event.getSource()).getScene().getWindow();
-        window.setScene(tableViewScene);
-        window.show();
+            Appointments selectedAppointment = appointmentsTableView.getSelectionModel().getSelectedItem();
+            AppointmentsAddModifyController appointmentsAddModifyController = loader.getController();
+            appointmentsAddModifyController.setDatabaseConnectionModify(conn, userID, customerList, appointmentsList, selectedAppointment);
+
+            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            window.setScene(tableViewScene);
+            window.show();
+        }
+        else{errorLabel.setText(rb.getString("NoItem"));}
     }
 
-
+    /**
+     * Opens the Confirm delete Scene and passes the selected Appointment and Appointment List
+     * @throws IOException Throws Exception
+     */
     public void deleteButtonPushed() throws  IOException {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("ConfirmAppointmentsDelete.fxml"));
-        Parent tableViewParent = loader.load();
 
-        Scene tableViewScene = new Scene(tableViewParent);
-        Stage window = new Stage();
+        Locale locale = Locale.getDefault();
+        var rb = ResourceBundle.getBundle("translation",locale);
 
-        Appointments selectedAppointment = appointmentsTableView.getSelectionModel().getSelectedItem();
+        if(appointmentsTableView.getSelectionModel().getSelectedItem() != null) {
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("ConfirmAppointmentsDelete.fxml"));
+            Parent tableViewParent = loader.load();
 
-        ConfirmAppointmentsDeleteController confirmAppointmentsDeleteController = loader.getController();
-        if(currentMonth.isSelected())
-        {confirmAppointmentsDeleteController.setSelectedCustomer(selectedAppointment, conn, currentMonthList, currentWeekList, appointmentsList, appointmentsTableView);}
-        if(currentWeek.isSelected())
-        {confirmAppointmentsDeleteController.setSelectedCustomer(selectedAppointment, conn, currentWeekList, currentMonthList, appointmentsList, appointmentsTableView);}
+            Scene tableViewScene = new Scene(tableViewParent);
+            Stage window = new Stage();
 
-        window.setScene(tableViewScene);
-        window.show();
+            Appointments selectedAppointment = appointmentsTableView.getSelectionModel().getSelectedItem();
 
+            ConfirmAppointmentsDeleteController confirmAppointmentsDeleteController = loader.getController();
+            if (currentMonth.isSelected()) {
+                confirmAppointmentsDeleteController.setSelectedCustomer(selectedAppointment, conn, currentMonthList, currentWeekList, appointmentsList, appointmentsTableView);
+            }
+            if (currentWeek.isSelected()) {
+                confirmAppointmentsDeleteController.setSelectedCustomer(selectedAppointment, conn, currentWeekList, currentMonthList, appointmentsList, appointmentsTableView);
+            }
+
+            window.setScene(tableViewScene);
+            window.show();
+        }
+        else{errorLabel.setText(rb.getString("NoItem"));}
     }
 
+    /**
+     * Updates tables based on radio button filter selected.
+     */
     public void updateTableByFilter() {
         if (appointmentFilter.getSelectedToggle().equals(currentMonth))
         {
@@ -150,16 +176,36 @@ public class AppointmentsUIController {
         }
     }
 
+    /**
+     * Sets the needed Lists, Numbers and Connection. Runs the Table filter and sets the tableView
+     * @param customerUI Sets Database Connection
+     * @param user Sets User Id
+     * @param customer Sets Customer List
+     * @param appointments Sets Appointments List
+     */
+    public void setDatabaseConnection(Connection customerUI, Integer user, ObservableList<Customer> customer, ObservableList<Appointments> appointments)
+    {
+        conn = customerUI;
+        userID = user;
+        customerList = customer;
+        appointmentsList = appointments;
+
+        setTableFilterLists();
+        appointmentsTableView.setItems(currentMonthList);
+
+    }
+
+    /**
+     * Sets the Table filter Lists Month and Week
+     * Lambda Expression is used to set the month list with a few easy lines of code instead of writing an additional method to set that list
+     */
     private void setTableFilterLists()
     {
         int currentUserMonthValue = LocalDate.now().getMonthValue();
 
-        for(int i = 0; i < appointmentsList.toArray().length;i++)
-        {
-            int appointmentMonth = appointmentsList.get(i).getStart().getMonthValue();
-            if (appointmentMonth == currentUserMonthValue){currentMonthList.add(appointmentsList.get(i));}
-        }
-
+        appointmentsList.forEach( n -> { int appointmentMonth = n.getStart().getMonthValue();
+            if (appointmentMonth == currentUserMonthValue) { currentMonthList.add(n); }
+        });
 
         LocalDate weekStart;
         LocalDate weekEnd;
@@ -212,7 +258,11 @@ public class AppointmentsUIController {
     }
 
 
-
+    /**
+     * Sets the Table View and Columns
+     * Sets the Toggle group for the Radio Buttons
+     * Sets the Language for all the Labels
+     */
     public void initialize()
     {
 
@@ -231,7 +281,6 @@ public class AppointmentsUIController {
         currentMonth.setToggleGroup(appointmentFilter);
         currentWeek.setToggleGroup(appointmentFilter);
         currentMonth.setSelected(true);
-
 
         Locale locale = Locale.getDefault();
         var rb = ResourceBundle.getBundle("translation",locale);

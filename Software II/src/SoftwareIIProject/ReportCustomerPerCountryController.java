@@ -8,10 +8,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.sql.Connection;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 public class ReportCustomerPerCountryController {
 
@@ -23,6 +26,9 @@ public class ReportCustomerPerCountryController {
     @FXML private Label usCountLabel;
     @FXML private Label ukCountLabel;
     @FXML private Label canadaCountLabel;
+
+    @FXML private Label customerPerCountryLabel;
+    @FXML private Button backButton;
 
     public void backToAppointments(ActionEvent event) throws IOException {
 
@@ -68,6 +74,16 @@ public class ReportCustomerPerCountryController {
         setCountryLabels();
     }
 
+    public void initialize()
+    {
+        Locale locale = Locale.getDefault();
+        var rb = ResourceBundle.getBundle("translation",locale);
+
+        customerPerCountryLabel.setText(rb.getString("CustomersPerCountry"));
+        backButton.setText(rb.getString("Back"));
+
+
+    }
 
 
 

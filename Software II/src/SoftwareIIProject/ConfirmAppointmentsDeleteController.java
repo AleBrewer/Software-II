@@ -11,6 +11,9 @@ import java.sql.Statement;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+/**
+ * Confirm Appointments Delete Window Controller
+ */
 public class ConfirmAppointmentsDeleteController {
 
     @FXML private Button cancelButton;
@@ -19,21 +22,27 @@ public class ConfirmAppointmentsDeleteController {
 
     private Connection conn;
 
-    ObservableList<Appointments> currentViewList;
-    ObservableList<Appointments> secondaryViewList;
-    ObservableList<Appointments> masterList;
-    TableView<Appointments> appointmentsTableView;
+    //Filtered lists and Appointments List
+    private ObservableList<Appointments> currentViewList;
+    private ObservableList<Appointments> secondaryViewList;
+    private ObservableList<Appointments> masterList;
+    private TableView<Appointments> appointmentsTableView;
 
     @FXML private Label confirmDeleteLabel;
     @FXML private Label topLabel;
     @FXML private Label bottomLabel;
 
-
+    /**
+     * Closes window if Cancel Button is pushed
+     */
     @FXML private void cancelButtonPushed(){
         Stage stage = (Stage) cancelButton.getScene().getWindow();
         stage.close();
     }
 
+    /**
+     * Deletes selected item from the Database, week filtered list(if applicable), month filtered list, and appointments list
+     */
     @FXML private void deleteButtonPushed() {
 
         try {
@@ -53,11 +62,20 @@ public class ConfirmAppointmentsDeleteController {
         stage.close();
     }
 
-    public void setSelectedCustomer(Appointments customer, Connection databaseConnection, ObservableList<Appointments> currentView,
+    /**
+     * Sets all the Lists
+     * @param appointment Sets Selected Appointment
+     * @param databaseConnection Sets Database connection
+     * @param currentView Sets list currently being viewed (Month filter or week filter)
+     * @param secondaryView (Sets the list not being viewed (Month filter or week filter)
+     * @param master (Sets the Appointments list)
+     * @param appointmentsTable (Sets Appointment Tableview)
+     */
+    public void setSelectedCustomer(Appointments appointment, Connection databaseConnection, ObservableList<Appointments> currentView,
                                     ObservableList<Appointments> secondaryView, ObservableList<Appointments> master,
                                     TableView<Appointments> appointmentsTable) {
 
-        selectedAppointment = customer;
+        selectedAppointment = appointment;
         conn = databaseConnection;
         currentViewList = currentView;
         secondaryViewList = secondaryView;
@@ -66,11 +84,12 @@ public class ConfirmAppointmentsDeleteController {
 
     }
 
-
+    /**
+     * Sets Languages for all the Labels and Buttons
+     */
     public void initialize() {
 
         //Set Language
-        //Locale.setDefault(new Locale("fr"));
         Locale locale = Locale.getDefault();
         var rb = ResourceBundle.getBundle("translation",locale);
 
