@@ -141,9 +141,9 @@ public class LoginUIController {
                                 result.getString("Address"),
                                 result.getString("Postal_Code"),
                                 result.getString("Phone"),
-                                result.getDate("Create_Date"),
+                                result.getTimestamp("Create_Date").toLocalDateTime(),
                                 result.getString("Created_By"),
-                                result.getDate("Last_Update"),
+                                result.getTimestamp("Last_Update").toLocalDateTime(),
                                 result.getString("Last_Updated_By"),
                                 firstDivisionResult.getString("Division"),
                                 countryResult.getString("Country")
@@ -234,6 +234,8 @@ public class LoginUIController {
         //Set your Language
         Locale locale = Locale.getDefault();
         var rb = ResourceBundle.getBundle("translation",locale);
+
+        System.out.println(Locale.getDefault());
 
         userLoginLabel.setText(rb.getString("UserLogin"));
         userIDLabel.setText(rb.getString("UserID"));

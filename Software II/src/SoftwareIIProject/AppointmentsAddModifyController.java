@@ -199,7 +199,7 @@ public class AppointmentsAddModifyController {
                     newAppointment.executeUpdate(sqlCustomer);
 
                     int appointmentIndex = 0;
-                    for(int i = 0; i < appointmentsList.toArray().length; i++) {
+                    for(int i = 0; i < appointmentsList.size(); i++) {
                         if (Integer.parseInt(appointmentIDTextField.getText()) == appointmentsList.get(i).getAppointmentID()){
                             appointmentIndex = appointmentsList.indexOf(appointmentsList.get(i));
                         }
@@ -220,7 +220,8 @@ public class AppointmentsAddModifyController {
                             Integer.parseInt(user_ID),
                             Integer.parseInt(contact_ID),
                             contactResult.getString("Contact_Name"),
-                            customerResult.getString("Customer_Name"));
+                            customerResult.getString("Customer_Name")
+                    );
 
                     appointmentsList.set(appointmentIndex, update);
 
@@ -328,6 +329,7 @@ public class AppointmentsAddModifyController {
      * @param user Sets the current User's ID
      * @param customers Sets the Customer List
      * @param appointments Set the the Appointment List
+     * @param selection Set Appointment Selection
      * Sets the Auto Generated ID Number and sets ComboBoxes
      * Also Sets the Texts fields with selected item's information
      */

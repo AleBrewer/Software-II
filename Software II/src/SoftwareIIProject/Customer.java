@@ -1,6 +1,7 @@
 package SoftwareIIProject;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 /**
  * Class builds Customer Objects
@@ -12,9 +13,9 @@ public class Customer {
     private String address;
     private String postalCode;
     private String phone;
-    private Date createDate;
+    private LocalDateTime createDate;
     private String createBy;
-    private Date lastUpdated;
+    private LocalDateTime lastUpdated;
     private String lastUpdatedBy;
     private String division;
     private String country;
@@ -32,8 +33,8 @@ public class Customer {
      * @param division      Division (Division ComboBox)
      * @param country       Country (Country ComboBox)
      */
-    public Customer(int id, String name, String address, String postalCode, String phone, Date createDate, String createBy,
-                    Date lastUpdated, String lastUpdatedBy, String division, String country)
+    public Customer(int id, String name, String address, String postalCode, String phone, LocalDateTime createDate, String createBy,
+                    LocalDateTime lastUpdated, String lastUpdatedBy, String division, String country)
     {
         this.id = id;
         this.name = name;
@@ -101,12 +102,12 @@ public class Customer {
     /**
      * @return Create Date
      */
-    public Date getCreateDate() {return createDate;}
+    public LocalDateTime getCreateDate() {return createDate;}
 
     /**
      * @param createDate Set Create Date
      */
-    public void setCreateDate(Date createDate) {this.createDate = createDate;}
+    public void setCreateDate(LocalDateTime createDate) {this.createDate = createDate;}
 
     /**
      * @return Create By
@@ -121,12 +122,12 @@ public class Customer {
     /**
      * @return Last Updated
      */
-    public Date getLastUpdated() {return lastUpdated;}
+    public LocalDateTime getLastUpdated() {return lastUpdated;}
 
     /**
      * @param lastUpdated Set Last Updated
      */
-    public void setLastUpdated(Date lastUpdated) {this.lastUpdated = lastUpdated;}
+    public void setLastUpdated(LocalDateTime lastUpdated) {this.lastUpdated = lastUpdated;}
 
     /**
      * @return Last Updated By
@@ -154,7 +155,7 @@ public class Customer {
     public String getCountry() {return country;}
 
     /**
-     * Set Country
+     * @param country Set Country
      */
     public void setCountry(String country) {this.country = country;}
 
