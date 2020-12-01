@@ -7,14 +7,14 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="578.0" prefWidth="820.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SoftwareIIProject.MainUIController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="578.0" prefWidth="862.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SoftwareIIProject.MainUIController">
    <children>
-      <Label fx:id="customersLabel" alignment="CENTER" layoutX="311.0" layoutY="14.0" prefHeight="33.0" prefWidth="199.0" text="Customers">
+      <Label fx:id="customersLabel" alignment="CENTER" layoutX="311.0" layoutY="27.0" prefHeight="33.0" prefWidth="199.0" text="Customers">
          <font>
             <Font name="System Bold" size="21.0" />
          </font>
       </Label>
-      <TableView fx:id="customerTableView" layoutX="68.0" layoutY="58.0" prefHeight="394.0" prefWidth="685.0">
+      <TableView fx:id="customerTableView" layoutX="90.0" layoutY="86.0" prefHeight="394.0" prefWidth="685.0">
         <columns>
           <TableColumn fx:id="customerIDColumn" prefWidth="37.0" text="ID" />
           <TableColumn fx:id="customerNameColumn" prefWidth="106.0" text="Name" />
@@ -25,20 +25,30 @@
             <TableColumn fx:id="customerCountryColumn" prefWidth="65.0" text="Country" />
         </columns>
       </TableView>
-      <Button fx:id="addButton" layoutX="83.0" layoutY="469.0" mnemonicParsing="false" onAction="#addButtonPushed" prefHeight="25.0" prefWidth="97.0" text="Add" />
-      <Button fx:id="updateButton" layoutX="206.0" layoutY="469.0" mnemonicParsing="false" onAction="#updateButtonPushed" prefHeight="25.0" prefWidth="97.0" text="Update" />
-      <Button fx:id="deleteButton" layoutX="329.0" layoutY="469.0" mnemonicParsing="false" onAction="#deleteButtonPushed" prefHeight="25.0" prefWidth="97.0" text="Delete" />
-      <Button fx:id="appointmentsButton" layoutX="578.0" layoutY="465.0" mnemonicParsing="false" onAction="#appointmentsButtonPushed" prefHeight="25.0" prefWidth="175.0" text="Appointments" />
-      <Button fx:id="exitButton" layoutX="746.0" layoutY="540.0" mnemonicParsing="false" onAction="#exitButtonPushed" prefHeight="25.0" prefWidth="60.0" text="Exit" />
-      <Button fx:id="reportsButton" layoutX="578.0" layoutY="499.0" mnemonicParsing="false" onAction="#reportsButtonPushed" prefHeight="25.0" prefWidth="175.0" text="Reports" />
-      <Label fx:id="upcomingAppointmentLabel" alignment="CENTER_RIGHT" layoutX="534.0" layoutY="18.0" prefHeight="25.0" prefWidth="263.0" text="No Upcoming Appointments">
+      <Button fx:id="addButton" layoutX="90.0" layoutY="498.0" mnemonicParsing="false" onAction="#addButtonPushed" prefHeight="25.0" prefWidth="97.0" text="Add" />
+      <Button fx:id="updateButton" layoutX="213.0" layoutY="498.0" mnemonicParsing="false" onAction="#updateButtonPushed" prefHeight="25.0" prefWidth="97.0" text="Update" />
+      <Button fx:id="deleteButton" layoutX="336.0" layoutY="498.0" mnemonicParsing="false" onAction="#deleteButtonPushed" prefHeight="25.0" prefWidth="97.0" text="Delete" />
+      <Button fx:id="appointmentsButton" layoutX="534.0" layoutY="496.0" mnemonicParsing="false" onAction="#appointmentsButtonPushed" prefHeight="25.0" prefWidth="175.0" text="Appointments" />
+      <Button fx:id="exitButton" layoutX="788.0" layoutY="541.0" mnemonicParsing="false" onAction="#exitButtonPushed" prefHeight="25.0" prefWidth="60.0" text="Exit" />
+      <Button fx:id="reportsButton" layoutX="534.0" layoutY="530.0" mnemonicParsing="false" onAction="#reportsButtonPushed" prefHeight="25.0" prefWidth="175.0" text="Reports" />
+      <Label fx:id="upcomingAppointmentLabel" alignment="CENTER_RIGHT" layoutX="534.0" layoutY="15.0" prefHeight="25.0" prefWidth="263.0" text="No Upcoming Appointments">
          <font>
             <Font size="15.0" />
          </font>
       </Label>
-      <Label fx:id="errorLabel" layoutX="83.0" layoutY="507.0" prefHeight="33.0" prefWidth="349.0">
+      <Label fx:id="errorLabel" layoutX="80.0" layoutY="525.0" prefHeight="33.0" prefWidth="349.0">
          <font>
             <Font size="21.0" />
+         </font>
+      </Label>
+      <Label fx:id="upcomingAppointmentIDLabel" alignment="CENTER_RIGHT" layoutX="534.0" layoutY="33.0" prefHeight="17.0" prefWidth="263.0">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </Label>
+      <Label fx:id="upcomingAppointmentDateTimeLabel" alignment="CENTER_RIGHT" layoutX="534.0" layoutY="50.0" prefHeight="17.0" prefWidth="263.0">
+         <font>
+            <Font size="15.0" />
          </font>
       </Label>
    </children>

@@ -17,9 +17,12 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.TimeZone;
 
 /**
  * Controller for Main UI
@@ -41,6 +44,8 @@ public class MainUIController {
 
     @FXML private Label customersLabel;
     @FXML private Label upcomingAppointmentLabel;
+    @FXML private Label upcomingAppointmentIDLabel;
+    @FXML private Label upcomingAppointmentDateTimeLabel;
     @FXML private Button addButton;
     @FXML private Button updateButton;
     @FXML private Button deleteButton;
@@ -124,7 +129,7 @@ public class MainUIController {
             Customer selectedCustomer = customerTableView.getSelectionModel().getSelectedItem();
 
             ConfirmCustomerDeleteController confirmCustomerDeleteController = loader.getController();
-            confirmCustomerDeleteController.setSelectedCustomer(selectedCustomer, conn, customerList);
+            confirmCustomerDeleteController.setSelectedCustomer(selectedCustomer, conn, customerList, appointmentsList);
             window.setScene(tableViewScene);
             window.show();
         }
@@ -204,15 +209,58 @@ public class MainUIController {
 
             Locale locale = Locale.getDefault();
             var rb = ResourceBundle.getBundle("translation",locale);
-            LocalDateTime timeNow = LocalDateTime.now();
+
             Calendar calendar = Calendar.getInstance();
+            TimeZone localtimeZone = calendar.getTimeZone();
+            LocalDateTime timeNow = LocalDateTime.now();
+            ZonedDateTime currentZone = timeNow.atZone(localtimeZone.toZoneId());
+            ZonedDateTime databaseZone = currentZone.withZoneSameInstant(ZoneId.of("UTC"));
+
+            LocalDateTime currentTime = currentZone.toLocalDateTime();
+            LocalDateTime targetTime = databaseZone.toLocalDateTime();
+
+
+            int value = 0;
+            if (currentTime.isBefore(targetTime))
+            {
+                while(!currentTime.equals(targetTime))
+                {
+                    currentTime = currentTime.plusHours(1);
+                    value++;
+                }
+                timeNow = timeNow.plusHours(value);
+            }
+
+            if (currentTime.isAfter(targetTime))
+            {
+                while(!targetTime.equals(currentTime))
+                {
+                    currentTime = currentTime.plusHours(1);
+                    value++;
+                }
+                timeNow = timeNow.minusHours(value);
+
+            }
+
+
+            String appointmentTime = "";
+
 
             while(checkAppointmentResults.next())
             {
                 if(        checkAppointmentResults.getTimestamp("Start", calendar).toLocalDateTime().isAfter(timeNow)
                         && checkAppointmentResults.getTimestamp("Start", calendar).toLocalDateTime().isBefore(timeNow.plusMinutes(15)))
                 {
+                    int appointmentResult = checkAppointmentResults.getInt("Appointment_ID");
+                    for (Appointments appointments : appointmentsList) {
+                        if (appointmentResult == appointments.getAppointmentID()) {
+                            appointmentTime = appointments.getStart().toString();
+                        }
+                    }
                     upcomingAppointmentLabel.setText(rb.getString("AppointmentUpcoming"));
+                    upcomingAppointmentIDLabel.setText(rb.getString("AppointmentID") + ": " + checkAppointmentResults.getString("Appointment_ID"));
+                    upcomingAppointmentDateTimeLabel.setText(rb.getString("Time") + ": " + appointmentTime );
+
                 }
             }
         }

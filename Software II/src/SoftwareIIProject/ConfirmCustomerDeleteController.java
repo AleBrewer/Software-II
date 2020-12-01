@@ -25,6 +25,7 @@ public class ConfirmCustomerDeleteController {
 
     private Connection conn;
     private ObservableList<Customer> customerList;
+    private ObservableList<Appointments> appointmentsList;
 
     /**
      * Closes Window when cancel is pushed
@@ -49,7 +50,9 @@ public class ConfirmCustomerDeleteController {
         }
         catch(Exception ex){System.out.println(ex.getMessage());}
 
+        for (int i = 0; i < appointmentsList.size(); i++) { if(appointmentsList.get(i).getCustomerID() == selectedCustomer.getId()){ appointmentsList.remove(i); } }
         customerList.remove(selectedCustomer);
+
         Stage stage = (Stage) deleteButton.getScene().getWindow();
         stage.close();
     }
@@ -59,11 +62,13 @@ public class ConfirmCustomerDeleteController {
      * @param customer Selected Customer
      * @param databaseConnection Database Connection
      * @param list Customer list
+     * @param appointments Appointments List
      */
-    public void setSelectedCustomer(Customer customer, Connection databaseConnection, ObservableList<Customer> list) {
+    public void setSelectedCustomer(Customer customer, Connection databaseConnection, ObservableList<Customer> list, ObservableList<Appointments> appointments) {
         selectedCustomer = customer;
         conn = databaseConnection;
         customerList = list;
+        appointmentsList = appointments;
     }
 
     /**

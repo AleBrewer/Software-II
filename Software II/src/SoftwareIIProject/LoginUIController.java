@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 import java.io.*;
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -149,8 +150,6 @@ public class LoginUIController {
                                 countryResult.getString("Country")
                         )
                 );
-
-
             }
         }
         catch (Exception ex) { System.out.println("Error:" + ex.getMessage()); }
@@ -164,6 +163,9 @@ public class LoginUIController {
         try{
 
             Calendar calendar = Calendar.getInstance();
+            TimeZone localtimeZone = calendar.getTimeZone();
+            LocalDateTime timeNow = LocalDateTime.now();
+            ZonedDateTime currentZone = timeNow.atZone(localtimeZone.toZoneId());
 
             String sqlStatement = "SELECT * FROM appointments";
             Statement stmt = conn.createStatement();
@@ -182,14 +184,20 @@ public class LoginUIController {
                 ResultSet customerResult = customerStmt.executeQuery(customerSql);
                 customerResult.next();
 
+                LocalDateTime timeStart = result.getTimestamp("Start").toLocalDateTime();
+                LocalDateTime timeEnd = result.getTimestamp("End").toLocalDateTime();
+
+                timeStart = timeStart.atZone(currentZone.getZone()).toLocalDateTime();
+                timeEnd = timeEnd.atZone(currentZone.getZone()).toLocalDateTime();
+
                 appointmentsList.add(new Appointments(
                                 result.getInt("Appointment_ID"),
                                 result.getString("Title"),
                                 result.getString("Description"),
                                 result.getString("Location"),
                                 result.getString("Type"),
-                                result.getTimestamp("Start", calendar).toLocalDateTime(),
-                                result.getTimestamp("End", calendar).toLocalDateTime(),
+                                timeStart,
+                                timeEnd,
                                 result.getTimestamp("Create_Date").toLocalDateTime(),
                                 result.getString("Created_By"),
                                 result.getTimestamp("Last_Update").toLocalDateTime(),
@@ -234,8 +242,6 @@ public class LoginUIController {
         //Set your Language
         Locale locale = Locale.getDefault();
         var rb = ResourceBundle.getBundle("translation",locale);
-
-        System.out.println(Locale.getDefault());
 
         userLoginLabel.setText(rb.getString("UserLogin"));
         userIDLabel.setText(rb.getString("UserID"));

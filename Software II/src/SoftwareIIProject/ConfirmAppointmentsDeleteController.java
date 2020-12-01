@@ -31,6 +31,8 @@ public class ConfirmAppointmentsDeleteController {
     @FXML private Label confirmDeleteLabel;
     @FXML private Label topLabel;
     @FXML private Label bottomLabel;
+    @FXML private Label appointmentID;
+    @FXML private Label appointmentType;
 
     /**
      * Closes window if Cancel Button is pushed
@@ -81,12 +83,23 @@ public class ConfirmAppointmentsDeleteController {
         secondaryViewList = secondaryView;
         masterList = master;
         appointmentsTableView = appointmentsTable;
+        setAppointmentInformation();
 
     }
 
     /**
      * Sets Languages for all the Labels and Buttons
      */
+
+    private void setAppointmentInformation(){
+        Locale locale = Locale.getDefault();
+        var rb = ResourceBundle.getBundle("translation",locale);
+
+        appointmentID.setText(rb.getString("AppointmentID") + ": " + selectedAppointment.getAppointmentID());
+        appointmentType.setText(rb.getString("Type") + ": " + selectedAppointment.getType());
+    }
+
+
     public void initialize() {
 
         //Set Language
@@ -98,7 +111,6 @@ public class ConfirmAppointmentsDeleteController {
         bottomLabel.setText(rb.getString("DeleteAppointmentBottom"));
         deleteButton.setText(rb.getString("Delete"));
         cancelButton.setText(rb.getString("Cancel"));
-
     }
 
 }
